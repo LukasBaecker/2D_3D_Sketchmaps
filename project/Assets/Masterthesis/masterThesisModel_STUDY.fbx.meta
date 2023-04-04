@@ -1,0 +1,782 @@
+fileFormatVersion: 2
+guid: c5426b7ab95a6d242b507b0a35758c1f
+ModelImporter:
+  serializedVersion: 21300
+  internalIDToNameTable:
+  - first:
+      74: -7182307772936408023
+    second: Pillow.001|American Elm|Take 001|BaseLayer
+  - first:
+      74: -5328187453293911605
+    second: Pillow.001|Box001.001|Take 001|BaseLayer
+  - first:
+      74: -8686341624580217858
+    second: Pillow.001|Box002|Take 001|BaseLayer
+  - first:
+      74: 86217113151673026
+    second: Pillow.001|Box002|Take 001|BaseLayer.001
+  - first:
+      74: 4092185328627791969
+    second: Pillow.001|Box002|Take 001|BaseLayer.002
+  - first:
+      74: -3148755881713219738
+    second: Pillow.001|Box002|Take 001|BaseLayer.003
+  - first:
+      74: -8525273594299452144
+    second: Pillow.001|Box002|Take 001|BaseLayer.004
+  - first:
+      74: 2284599398511765666
+    second: Pillow.001|Box003|Take 001|BaseLayer
+  - first:
+      74: 8972625427086386552
+    second: Pillow.001|Box003|Take 001|BaseLayer.001
+  - first:
+      74: 283106108192024399
+    second: Pillow.001|Box003|Take 001|BaseLayer.002
+  - first:
+      74: -5162048663065196841
+    second: Pillow.001|Box003|Take 001|BaseLayer.003
+  - first:
+      74: -7354277705869981488
+    second: Pillow.001|Box004|Take 001|BaseLayer
+  - first:
+      74: 3305935961499564888
+    second: Pillow.001|Omni001|Take 001|BaseLayer
+  - first:
+      74: -897863708295806780
+    second: Pillow|American Elm|Take 001|BaseLayer
+  - first:
+      74: -5529512537444837007
+    second: Pillow|Box001.001|Take 001|BaseLayer
+  - first:
+      74: -6189201200493007012
+    second: Pillow|Box002|Take 001|BaseLayer
+  - first:
+      74: -1235653513845979829
+    second: Pillow|Box002|Take 001|BaseLayer.001
+  - first:
+      74: -4789414541815989106
+    second: Pillow|Box002|Take 001|BaseLayer.002
+  - first:
+      74: -4736127138636430861
+    second: Pillow|Box002|Take 001|BaseLayer.003
+  - first:
+      74: 2909286804311358638
+    second: Pillow|Box002|Take 001|BaseLayer.004
+  - first:
+      74: 3353086766917516675
+    second: Pillow|Box003|Take 001|BaseLayer
+  - first:
+      74: 1192835516646422544
+    second: Pillow|Box003|Take 001|BaseLayer.001
+  - first:
+      74: -8375679995365780162
+    second: Pillow|Box003|Take 001|BaseLayer.002
+  - first:
+      74: 2988421548158541753
+    second: Pillow|Box003|Take 001|BaseLayer.003
+  - first:
+      74: -6322513830500462672
+    second: Pillow|Box004|Take 001|BaseLayer
+  - first:
+      74: -6251851360179058551
+    second: Pillow|Omni001|Take 001|BaseLayer
+  - first:
+      74: 3858002936144414330
+    second: Pillow.002|American Elm|Take 001|BaseLayer
+  - first:
+      74: 2868963532246312515
+    second: Pillow.002|Box001.001|Take 001|BaseLayer
+  - first:
+      74: 5599110477437853211
+    second: Pillow.002|Box002|Take 001|BaseLayer
+  - first:
+      74: 2137391115890160013
+    second: Pillow.002|Box002|Take 001|BaseLayer.001
+  - first:
+      74: -6011207033567372460
+    second: Pillow.002|Box002|Take 001|BaseLayer.002
+  - first:
+      74: -4843471510599557336
+    second: Pillow.002|Box002|Take 001|BaseLayer.003
+  - first:
+      74: 5557012526828593189
+    second: Pillow.002|Box002|Take 001|BaseLayer.004
+  - first:
+      74: -6401004185274610476
+    second: Pillow.002|Box003|Take 001|BaseLayer
+  - first:
+      74: -2402640622129863858
+    second: Pillow.002|Box003|Take 001|BaseLayer.001
+  - first:
+      74: -7038559749028924723
+    second: Pillow.002|Box003|Take 001|BaseLayer.002
+  - first:
+      74: 2639300527086683959
+    second: Pillow.002|Box003|Take 001|BaseLayer.003
+  - first:
+      74: 957957476780372492
+    second: Pillow.002|Box004|Take 001|BaseLayer
+  - first:
+      74: -3508304792827556233
+    second: Pillow.002|Omni001|Take 001|BaseLayer
+  - first:
+      74: -8196753716423022990
+    second: Pillow.003|American Elm|Take 001|BaseLayer
+  - first:
+      74: 6975751843872460022
+    second: Pillow.003|Box001.001|Take 001|BaseLayer
+  - first:
+      74: 2810979909279013956
+    second: Pillow.003|Box002|Take 001|BaseLayer
+  - first:
+      74: -9064104091009038147
+    second: Pillow.003|Box002|Take 001|BaseLayer.001
+  - first:
+      74: -5096602183434800518
+    second: Pillow.003|Box002|Take 001|BaseLayer.002
+  - first:
+      74: 1928827269986371072
+    second: Pillow.003|Box002|Take 001|BaseLayer.003
+  - first:
+      74: -8752673444671474631
+    second: Pillow.003|Box002|Take 001|BaseLayer.004
+  - first:
+      74: 9126799976308236710
+    second: Pillow.003|Box003|Take 001|BaseLayer
+  - first:
+      74: -370884562409696571
+    second: Pillow.003|Box003|Take 001|BaseLayer.001
+  - first:
+      74: 6875618738245776502
+    second: Pillow.003|Box003|Take 001|BaseLayer.002
+  - first:
+      74: 2416941413471136198
+    second: Pillow.003|Box003|Take 001|BaseLayer.003
+  - first:
+      74: -4975299321711259553
+    second: Pillow.003|Box004|Take 001|BaseLayer
+  - first:
+      74: 1958706377975645884
+    second: Pillow.003|Omni001|Take 001|BaseLayer
+  - first:
+      74: -1075968022013306290
+    second: Pillow.004|American Elm|Take 001|BaseLayer
+  - first:
+      74: -3895559313796471557
+    second: Pillow.004|Box001.001|Take 001|BaseLayer
+  - first:
+      74: 1309692101834578964
+    second: Pillow.004|Box002|Take 001|BaseLayer
+  - first:
+      74: -1068220996644750143
+    second: Pillow.004|Box002|Take 001|BaseLayer.001
+  - first:
+      74: 4804731486957915168
+    second: Pillow.004|Box002|Take 001|BaseLayer.002
+  - first:
+      74: -6455143152452208653
+    second: Pillow.004|Box002|Take 001|BaseLayer.003
+  - first:
+      74: 4420769769047844548
+    second: Pillow.004|Box002|Take 001|BaseLayer.004
+  - first:
+      74: -1858285436311293421
+    second: Pillow.004|Box003|Take 001|BaseLayer
+  - first:
+      74: 8606770542830426348
+    second: Pillow.004|Box003|Take 001|BaseLayer.001
+  - first:
+      74: -2813866532500903357
+    second: Pillow.004|Box003|Take 001|BaseLayer.002
+  - first:
+      74: 2006125167726114715
+    second: Pillow.004|Box003|Take 001|BaseLayer.003
+  - first:
+      74: 228329695626362560
+    second: Pillow.004|Box004|Take 001|BaseLayer
+  - first:
+      74: 6890193831836784553
+    second: Pillow.004|Omni001|Take 001|BaseLayer
+  - first:
+      74: -3164434877972661584
+    second: Pillow.005|American Elm|Take 001|BaseLayer
+  - first:
+      74: -3868651885087355876
+    second: Pillow.005|Box001.001|Take 001|BaseLayer
+  - first:
+      74: 7083348055222891710
+    second: Pillow.005|Box002|Take 001|BaseLayer
+  - first:
+      74: -2966099242138706494
+    second: Pillow.005|Box002|Take 001|BaseLayer.001
+  - first:
+      74: 2724156899791007941
+    second: Pillow.005|Box002|Take 001|BaseLayer.002
+  - first:
+      74: 2628903458241895983
+    second: Pillow.005|Box002|Take 001|BaseLayer.003
+  - first:
+      74: 3155754742579972921
+    second: Pillow.005|Box002|Take 001|BaseLayer.004
+  - first:
+      74: 5053834756982773699
+    second: Pillow.005|Box003|Take 001|BaseLayer
+  - first:
+      74: 8316348023858648565
+    second: Pillow.005|Box003|Take 001|BaseLayer.001
+  - first:
+      74: 1313979565989380499
+    second: Pillow.005|Box003|Take 001|BaseLayer.002
+  - first:
+      74: 7187116244477790867
+    second: Pillow.005|Box003|Take 001|BaseLayer.003
+  - first:
+      74: -5340424386461654180
+    second: Pillow.005|Box004|Take 001|BaseLayer
+  - first:
+      74: -4694102551178618027
+    second: Pillow.005|Omni001|Take 001|BaseLayer
+  - first:
+      74: -210845037245705426
+    second: Pillow.006|American Elm|Take 001|BaseLayer
+  - first:
+      74: 1191581413549098398
+    second: Pillow.006|Box001.001|Take 001|BaseLayer
+  - first:
+      74: -3306778283806578474
+    second: Pillow.006|Box002|Take 001|BaseLayer
+  - first:
+      74: -7370524848902556396
+    second: Pillow.006|Box002|Take 001|BaseLayer.001
+  - first:
+      74: -6974670471218782780
+    second: Pillow.006|Box002|Take 001|BaseLayer.002
+  - first:
+      74: -8594877140440184148
+    second: Pillow.006|Box002|Take 001|BaseLayer.003
+  - first:
+      74: 181985331467310868
+    second: Pillow.006|Box002|Take 001|BaseLayer.004
+  - first:
+      74: 2784648384887242672
+    second: Pillow.006|Box003|Take 001|BaseLayer
+  - first:
+      74: 8415551287537483775
+    second: Pillow.006|Box003|Take 001|BaseLayer.001
+  - first:
+      74: -679843057669331421
+    second: Pillow.006|Box003|Take 001|BaseLayer.002
+  - first:
+      74: 5289347991579149978
+    second: Pillow.006|Box003|Take 001|BaseLayer.003
+  - first:
+      74: 3287081671294385912
+    second: Pillow.006|Box004|Take 001|BaseLayer
+  - first:
+      74: -2253140793245724816
+    second: Pillow.006|Omni001|Take 001|BaseLayer
+  - first:
+      74: -7425407406740220534
+    second: Pillow.007|American Elm|Take 001|BaseLayer
+  - first:
+      74: -7503889860235885749
+    second: Pillow.007|Box001.001|Take 001|BaseLayer
+  - first:
+      74: -4350436649843334174
+    second: Pillow.007|Box002|Take 001|BaseLayer
+  - first:
+      74: -6178364855509056655
+    second: Pillow.007|Box002|Take 001|BaseLayer.001
+  - first:
+      74: 3741816319211973351
+    second: Pillow.007|Box002|Take 001|BaseLayer.002
+  - first:
+      74: 2444654055336001663
+    second: Pillow.007|Box002|Take 001|BaseLayer.003
+  - first:
+      74: -8247401817342472883
+    second: Pillow.007|Box002|Take 001|BaseLayer.004
+  - first:
+      74: -4918279008711306663
+    second: Pillow.007|Box003|Take 001|BaseLayer
+  - first:
+      74: -7965570790109182630
+    second: Pillow.007|Box003|Take 001|BaseLayer.001
+  - first:
+      74: -5926772670136806522
+    second: Pillow.007|Box003|Take 001|BaseLayer.002
+  - first:
+      74: 4435897374121431132
+    second: Pillow.007|Box003|Take 001|BaseLayer.003
+  - first:
+      74: -840654433925477741
+    second: Pillow.007|Box004|Take 001|BaseLayer
+  - first:
+      74: 3760513446451811454
+    second: Pillow.007|Omni001|Take 001|BaseLayer
+  - first:
+      74: 4654717241202699932
+    second: Pillow.008|American Elm|Take 001|BaseLayer
+  - first:
+      74: 4261114299464225738
+    second: Pillow.008|Box001.001|Take 001|BaseLayer
+  - first:
+      74: 6369344058958322598
+    second: Pillow.008|Box002|Take 001|BaseLayer
+  - first:
+      74: -7378675912739940973
+    second: Pillow.008|Box002|Take 001|BaseLayer.001
+  - first:
+      74: -4154378922506005614
+    second: Pillow.008|Box002|Take 001|BaseLayer.002
+  - first:
+      74: -2960432830286714327
+    second: Pillow.008|Box002|Take 001|BaseLayer.003
+  - first:
+      74: 8310259699297930553
+    second: Pillow.008|Box002|Take 001|BaseLayer.004
+  - first:
+      74: -7479335263624625472
+    second: Pillow.008|Box003|Take 001|BaseLayer
+  - first:
+      74: 384880755522321755
+    second: Pillow.008|Box003|Take 001|BaseLayer.001
+  - first:
+      74: 7266688203365434921
+    second: Pillow.008|Box003|Take 001|BaseLayer.002
+  - first:
+      74: 6664609848789613085
+    second: Pillow.008|Box003|Take 001|BaseLayer.003
+  - first:
+      74: 1189741653664390408
+    second: Pillow.008|Box004|Take 001|BaseLayer
+  - first:
+      74: 7923593066197781983
+    second: Pillow.008|Omni001|Take 001|BaseLayer
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: "Bez n\xE1zvu.001"
+    second: {fileID: 2100000, guid: 24c1d259dfb35254b93b8569a40c369b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: BicycleStand4
+    second: {fileID: 2100000, guid: 8af114bdd095d324fbb28bee6b64d1c8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Carcamero_ma
+    second: {fileID: 2100000, guid: 4a56ab6a55895cf4d86213cd31c0ba8c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Coffee
+    second: {fileID: 2100000, guid: 5e3b32b3b6bf7c24c8c9009c70deaa15, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ColorPalette
+    second: {fileID: 2100000, guid: 12bc92e934c61894eac56cfa65faee03, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Glass window.002
+    second: {fileID: 2100000, guid: c816872bb34a1964fadc9327d3a12ba3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Goi
+    second: {fileID: 2100000, guid: d5205e224f789ef418bc660fd32e3697, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Light
+    second: {fileID: 2100000, guid: ae2b2df72e852cf49ab6dcb158d08ca6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Low Poly Cycles (BMX, Mountain Bike, Unicycle) 1
+    second: {fileID: 2100000, guid: 80f0f9ca78d715145ae79d3e7ab984ab, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material.003
+    second: {fileID: 2100000, guid: dab4b051754edf84daca252314cc1e98, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material.004
+    second: {fileID: 2100000, guid: 10f55bb9291825d43bcd73659beae521, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material.009
+    second: {fileID: 2100000, guid: e68d49e5e205f3348aa3d068efd5c78f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material.025
+    second: {fileID: 2100000, guid: 054036e78804563498f37b41c49e3053, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material.026
+    second: {fileID: 2100000, guid: 5df2edfc86ec08140893d731a8a0ec0f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material.027
+    second: {fileID: 2100000, guid: ae641af78c5c6974e8b342764e2fc82c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material.028
+    second: {fileID: 2100000, guid: b5006c8a7948a514f9b23ab137ffe73f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material.029
+    second: {fileID: 2100000, guid: 1612e95b046b65b42a285db12ecb0d27, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material.030
+    second: {fileID: 2100000, guid: fa2a7f421ef216248b2b7a7589eb9e74, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material.031
+    second: {fileID: 2100000, guid: 68fafe7439f9c204789c4c2e6bf013ed, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material.032
+    second: {fileID: 2100000, guid: 806b90572d4964e47b2f61ad784d57a5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Metal_handrail.withoutAO
+    second: {fileID: 2100000, guid: 6bce1137f2acc7a45ab5112376b03313, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: OUTDOOR
+    second: {fileID: 2100000, guid: 12a13d17fb6fbb44d8f919dd49fba00e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Porcelain
+    second: {fileID: 2100000, guid: 6a0ff7b171625ea498de383db04f7472, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Rhino
+    second: {fileID: 2100000, guid: af2caa39b397c1847926e504b316779a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: SNACKS2
+    second: {fileID: 2100000, guid: b6592d8b7187bd74ca0d84cde0815644, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Sheep
+    second: {fileID: 2100000, guid: 4d24bdf79a5658f4b81bf71ec0b5b59f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: acier
+    second: {fileID: 2100000, guid: 15c9e931eb5ff244fa9c46fbebb9def0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: acier.001
+    second: {fileID: 2100000, guid: 0c23b44c495c7374b904a3281e1c74e3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: black glass 2
+    second: {fileID: 2100000, guid: 84b097212e7eb4e48af0a3446e12e4b2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: clock
+    second: {fileID: 2100000, guid: 2d1e9c58fb0558a40b6712b0b40c9a9b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: default.002
+    second: {fileID: 2100000, guid: b6762ebfb90877041a6688464a08cead, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ecran
+    second: {fileID: 2100000, guid: 716c1c9d71f5bc54291661448d6acf41, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: fire
+    second: {fileID: 2100000, guid: 69662b3ac9da2bb439f52be1ae92378c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: fulgor
+    second: {fileID: 2100000, guid: 15378990bd33a8b4394678bdcb74ffda, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: gas 1
+    second: {fileID: 2100000, guid: bd7c5eaddcbce264486b78a858f78c82, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: gas 2
+    second: {fileID: 2100000, guid: 214814e5b4c648a448b74401f10b2357, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: gas 3
+    second: {fileID: 2100000, guid: d22766cefdfc6394186aad7ff76bfd6f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: gas 4
+    second: {fileID: 2100000, guid: d12bcc6502e67954fafcbf7f2f128e7c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: gas 5
+    second: {fileID: 2100000, guid: 6fe7842f9b9c5c84a8e3c5d99eeeec1b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: greyish
+    second: {fileID: 2100000, guid: f8b53a375123cf94880fd5fd63182e8f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: hood
+    second: {fileID: 2100000, guid: 8dde758a65ac15c40a8101a3ae7b9cb5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: light
+    second: {fileID: 2100000, guid: 11c3efde9fcdf4b40bef3ef617829d16, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: light_floor
+    second: {fileID: 2100000, guid: 2e7c0212b9a85da429ccc23b2616a774, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: marble
+    second: {fileID: 2100000, guid: 91f3d154956f79641869c40fb0aa3123, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mdf 1
+    second: {fileID: 2100000, guid: 7495cac39cc659f47b1eb588292b5903, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mdf 2
+    second: {fileID: 2100000, guid: f9f6f1ea844735d4c983950b8030791b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: miele
+    second: {fileID: 2100000, guid: 84775e28ccc620842b89e70b869d5913, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: normal .008
+    second: {fileID: 2100000, guid: 3c64b3965e742a741ab11ccdf5a8cd69, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: normal .010
+    second: {fileID: 2100000, guid: be6d0b80de88da24fb7c180f7404011e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: normal_
+    second: {fileID: 2100000, guid: 0cc0e452923bf5742adb0d02c20e4015, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: notVisible
+    second: {fileID: 2100000, guid: 8a1209aaf27e72c4f9160f6f7c16cc5b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: outdoor
+    second: {fileID: 2100000, guid: 921f49f700ef71f449da795674d9e280, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: oven glass
+    second: {fileID: 2100000, guid: 34ae36271e9623f44a6ef73ba3238ab3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: plaque
+    second: {fileID: 2100000, guid: c0631bc71a2245c4e958c89d48256616, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: plaque.001
+    second: {fileID: 2100000, guid: 1d1d1fdfd344aa949adf4ed838af5016, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: poids_noir
+    second: {fileID: 2100000, guid: 6e00ead4e84c43748806762d1bea6743, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: poids_noir.001
+    second: {fileID: 2100000, guid: 103d10d5a1232c74cb29663c7ba3508e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: shark
+    second: {fileID: 2100000, guid: 99e78a8f3c90d764f9298ac53992c380, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: sink 1
+    second: {fileID: 2100000, guid: 98c01a9887517184aa5218a486f6068b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: sink 2
+    second: {fileID: 2100000, guid: e48b1a0bd9fe3764799562a3cff2ba48, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: steel
+    second: {fileID: 2100000, guid: 829c4e41c0babde44a3ebda5dab690b6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: steel 1
+    second: {fileID: 2100000, guid: 0da8813e68d9aad46b467ec13dc1bd46, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: steel 2
+    second: {fileID: 2100000, guid: 9a52190372922224d838caf7f0a2eedb, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: tribuene
+    second: {fileID: 2100000, guid: 7b6e0f04f09e706469e37758f06ec92b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: wood_cabinet_worn_long.stairs
+    second: {fileID: 2100000, guid: 595ee3ae2f6dbee4da02e44e8f81d1be, type: 2}
+  materials:
+    materialImportMode: 2
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    removeConstantScaleCurves: 1
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 0
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    nodeNameCollisionStrategy: 1
+    fileIdsGeneration: 2
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    keepQuads: 0
+    weldVertices: 1
+    bakeAxisConversion: 0
+    preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    optimizeBones: 1
+    meshOptimizationFlags: -1
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 1
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
+  importAnimation: 1
+  humanDescription:
+    serializedVersion: 3
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    globalScale: 1
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
+  animationType: 2
+  humanoidOversampling: 1
+  avatarSetup: 0
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 1
+  remapMaterialsIfMaterialImportModeIsNone: 0
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
