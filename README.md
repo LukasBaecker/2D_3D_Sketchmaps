@@ -1,5 +1,5 @@
 # Comparing 2D and 3D Sketch Maps in Virtual Reality
-This repository contains the Unity-project and all important analysis steps from my Masterthesis "Comparing 2D and 3D Sketch Maps in Virtual Reality" written at the [Institute for Geoinformatics](https://www.uni-muenster.de/Geoinformatics/)
+This repository contains the Unity-project and all important analysis steps from my Masterthesis "Comparing 2D and 3D Sketch Maps in Virtual Reality" written at the [Institute for Geoinformatics](https://www.uni-muenster.de/Geoinformatics/).
 
 ## Abstract 
 The aim of this thesis is to compare 2D and 3D Sketch Maps
@@ -33,4 +33,4 @@ The [analysis subfolder](./analysis) contains all tools that I needed to analyse
 ...more to follow
 
 ### How to setup the analysis
-Add step by step
+...more to follow
