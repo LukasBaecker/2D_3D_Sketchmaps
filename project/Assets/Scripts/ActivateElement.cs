@@ -3,12 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-/**
-* script, that activates a disabled element
-* the script is triggered by a collision with a trigger and then
-* a given element that is deactivated will be activated
-*/
-
 /// <summary>
 /// Script, that activates a disabled element.
 /// The script is triggered by a collision with a trigger and then
@@ -29,7 +23,3 @@ public class ActivateElement : MonoBehaviour
         element.SetActive(true);
     }
 }
-
-/*
-this script is used to activate the navigation stripes one after another when following the route.
-*/
