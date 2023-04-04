@@ -20,6 +20,7 @@ To use the Unity project follow these steps:
   * open the Unity Hub
   * open the [project](./project) folder and follow the instructions by Unity
   
+### Note this
 In the project you will find all assets, skripts and settings I set up for my user study. Following are the most important aspects explained:
   * The assest used, are partly build on my own with Blender and partly downloaded as free assets with CC-licence (check out for example the assets from the [School Rooms Collection](./project/Assets/SchoolRooms)). The main model can be found in the [/Assets/Masterthesis subfolder](./project/Assets/Masterthesis) which was created with Blender. I finalized it in Unity why the fbx file differs from the final model. When putting it into a scene, It can be unpacked and modified this way.
   * The [/Assets/Scene subfolder](./project/Assets/Scene) contains the training scene and the study scene that both could be modified or also more scence (as a menu scene) could be added. The scene order can be changed in the Build setting window. The navigation between different scenes was realised with a script that lets a player changes the scene when colliding with a trigger.
