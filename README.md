@@ -12,6 +12,15 @@ This project can be used to be rebuild and used with other environments for VR w
 
 The idea of the project is, that one can put in any model and change the route as they wish. At the start position are two buttons: one (the green one) that activates the first part of the route and one (the red one) that deactivates the whole route regardless of the state of the navigation task. Each part of the route has a box collider as a trigger that activates the following segment. the last segment activates a final button that can be pushed and filled with more logic if one wishes.
 
+### How to install the study-game on your Meta Quest 2
+The easiest way to play the navigation game that I build for the study of this thesis is to download and install the current APK. Follow these steps to install the programm:
+
+  * Download the APK from .....add a link to the apk
+  * Install it like this ... add description
+  * The installed APK will be found in your App-list under "unknown sources" and it is calles masterthesisLukas ...could be changed to something more like the title
+  
+  If you do not want to use the programm as it is you can also download the Unity-project and change it as you wish. Have a look at the following segment.
+  
 ### How to set up the Unity Project
 Unity Version: 2021.3.10f1
 
