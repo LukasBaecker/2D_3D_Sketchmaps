@@ -27,10 +27,12 @@ When the project is set up the following steps need to be done to use the app on
   * They Quest 2 and the phone should be in the same Wifi and the connection to the app should be straight forward.
   * In the app click on the Meta Quest 2 and open the headset-settings. Here you can enable the developer mode of the glasses.
   * Now you can connect the Quest 2 to your computer via USB.
+  * Looking into your Quest 2 you will get a message you need to accept when connecting to the PC.
   * In Unity with the project opened go to File -> Build Settings (Ctrl+Shift+B)
   * Under "Run Device" click "Refresh" and select the Meta Quest 2 in the dropdown menu.
   * Optional: change settings as you wish (without warranty) like for example under "Player Settings..." you can change the "Product Name" that will be shown as the app's name on the Meta Quest 2.
   * Click "Build and Run", safe the apk on your computer with a recognizable name even if the game will be build and run on the glasses directly.
+  * Your app will automatically run on your device but it can also be found anytime in your installed apps. set the filter for "unknown sources" and you will see your app with the project name you set. 
   
 ### Note this
 In the project you will find all assets, skripts and settings I set up for my user study. Following are the most important aspects explained:
