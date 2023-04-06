@@ -12,15 +12,6 @@ This project can be used to be rebuild and used with other environments for VR w
 
 The idea of the project is, that one can put in any model and change the route as they wish. At the start position are two buttons: one (the green one) that activates the first part of the route and one (the red one) that deactivates the whole route regardless of the state of the navigation task. Each part of the route has a box collider as a trigger that activates the following segment. the last segment activates a final button that can be pushed and filled with more logic if one wishes.
 
-### How to install the study-game on your Meta Quest 2
-The easiest way to play the navigation game that I build for the study of this thesis is to download and install the current APK. Follow these steps to install the programm:
-
-  * Download the APK from .....add a link to the apk
-  * Install it like this ... add description
-  * The installed APK will be found in your App-list under "unknown sources" and it is calles masterthesisLukas ...could be changed to something more like the title
-  
-  If you do not want to use the programm as it is you can also download the Unity-project and change it as you wish. Have a look at the following segment.
-  
 ### How to set up the Unity Project
 Unity Version: 2021.3.10f1
 
@@ -28,6 +19,18 @@ To use the Unity project follow these steps:
   * clone or download the repo
   * open the Unity Hub
   * open the [project](./project) folder and follow the instructions by Unity
+  
+### How to install the navigation app of the study on your Meta Quest 2
+When the project is set up the following steps need to be done to use the app on our Quest 2:
+
+  * Download the Meta Quest Mobile App and login with the admin account on your Quest 2.
+  * They Quest 2 and the phone should be in the same Wifi and the connection to the app should be straight forward.
+  * In the app click on the Meta Quest 2 and open the headset-settings. Here you can enable the developer mode of the glasses.
+  * Now you can connect the Quest 2 to your computer via USB.
+  * In Unity with the project opened go to File -> Build Settings (Ctrl+Shift+B)
+  * Under "Run Device" click "Refresh" and select the Meta Quest 2 in the dropdown menu.
+  * Optional: change settings as you wish (without warranty) like for example under "Player Settings..." you can change the "Product Name" that will be shown as the app's name on the Meta Quest 2.
+  * Click "Build and Run", safe the apk on your computer with a recognizable name even if the game will be build and run on the glasses directly.
   
 ### Note this
 In the project you will find all assets, skripts and settings I set up for my user study. Following are the most important aspects explained:
