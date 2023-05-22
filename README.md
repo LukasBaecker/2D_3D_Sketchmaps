@@ -5,6 +5,12 @@ This repository contains the Unity-project and all important analysis steps from
 The aim of this thesis is to compare 2D and 3D Sketch Maps
 ...more to follow
 
+## Software and Versions
+  * Blender 3.4.1
+  * Unity 2021.3.10f1
+  * Meta Quest with System ...
+  * R Studio 2023.03.1+446
+  * R 4.3.0
 ## Unity VR-Navigation Project
 The [project](./project) subfolder contains the Unity project for a VR navigation task of my study.
 
