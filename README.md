@@ -57,3 +57,7 @@ The [analysis subfolder](./analysis) contains all tools that I needed to analyse
 
 ### 3D Assets Attribution
 Low Poly Shark by IsabelleDotJpeg ([at sketchfab](https://sketchfab.com/3d-models/low-poly-blahaj-5ac23e0cd44d49dcaaa14967f7d7a778))
+Low Poly Car by Creative Mango ([at sketchfab](https://sketchfab.com/3d-models/low-poly-car-93971323324243468f24d7da9d18f617))
+Stuffed rhino toy low poly by assetfactory ([at sketchfab](https://sketchfab.com/3d-models/stuffed-rhino-toy-low-poly-f5251aad48af4eae8bcccad6217fc5a6))
+Cat - PS1 Low Poly (Rigged) by Wersaus33 ([at sketchfab](https://sketchfab.com/3d-models/cat-ps1-low-poly-rigged-78d863ba43b34a6c9fdd6c61dbf5776f))
+Stuffed sheep toy low poly by assetfactory ([at sketchfab](https://sketchfab.com/3d-models/stuffed-sheep-toy-low-poly-13c1fb8edb994f69a84a94c3d31e63a7))
