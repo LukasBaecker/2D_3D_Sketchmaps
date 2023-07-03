@@ -54,3 +54,6 @@ The [analysis subfolder](./analysis) contains all tools that I needed to analyse
 
 ### How to setup the analysis
 ...more to follow
+
+### 3D Assets Attribution
+Low Poly Shark by IsabelleDotJpeg ([at sketchfab](https://sketchfab.com/3d-models/low-poly-blahaj-5ac23e0cd44d49dcaaa14967f7d7a778))
