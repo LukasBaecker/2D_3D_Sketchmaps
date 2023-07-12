@@ -1,0 +1,33 @@
+ID,Sprache wählen / choose language,Wie alt sind Sie? / How old are you?,Geschlecht / Gender,Erklärung,Beispiel,Beispiel,Frage 1,Frage 2,Frage 3,Frage 4,Frage 5,Frage 6,Frage 7,Frage 8,Frage 9,Frage 10,"Nach Durchführung der Studie:
+In welcher Reihenfolge haben Sie die Sketch Maps gezeichnet?","Stift und Papier: Geistige Anforderungen
+Wie geistig anstrengend war es, die Sketch Map zu zeichnen?","Stift und Papier: Körperliche Anforderungen
+Wie körperlich anstrengend war es, die Sketch Map zu zeichnen?","Stift und Papier: Zeitliche Anforderungen
+Wie hoch beurteilen Sie den zeitlichen Aufwand zum zeichnen der Sketch Map?","Stift und Papier: Leistung
+Wie zufrieden sind Sie mit Ihrer Arbeit und der Zeichnug?","Stift und Papier: Anstrengung
+Wie hart mussten Sie insgesamt arbeiten, um Ihre Sketch Map zu zeichen?","Stift und Papier: Frustration
+Wie frustrierend war es, die Sketch Map zu zeichnen?","3D Zeichnen in VR: Geistige Anforderungen
+Wie geistig anstrengend war es, die Sketch Map zu zeichnen?","3D Zeichnen in VR: Körperliche Anforderungen
+Wie körperlich anstrengend war es, die Sketch Map zu zeichnen?","3D Zeichnen in VR: Zeitliche Anforderungen
+Wie hoch beurteilen Sie den zeitlichen Aufwand zum zeichnen der Sketch Map?","3D Zeichnen in VR: Leistung
+Wie zufrieden sind Sie mit Ihrer Arbeit und der Zeichnug?","3D Zeichnen in VR: Anstrengung
+Wie hart mussten Sie insgesamt arbeiten, um Ihre Sketch Map zu zeichen?","3D Zeichnen in VR: Frustration
+Wie frustrierend war es, die Sketch Map zu zeichnen?",Explanation,Example,Example,Question 1,Question 2,Question 3,Question 4,Question 5,Question 6,Question 7,Question 8,Question 9,Question 10,"After conducting the study:
+In what order did you draw the sketch maps?","Pen and paper: Mental Demands
+How mentally demanding was it to draw the sketch map?","Pen and Paper: Physical Demands
+How physically demanding was the drawing of the sketch map?","Pen and Paper: Time requirenment
+How high do you rate the time required to draw the Sketch Map?","Pen and Paper: Performance
+How satisfied are you with your work and your sketch?","Pen and Paper: Effort
+Overall, how hard do you had to work to draw the sketch map?","Pen and Paper: Frustration
+How frustrated were you when drawing the sketch map?","3D-drawing in VR: Mental Demands
+How mentally demanding was it to draw the sketch map?","3D-drawing in VR: Physical Demands
+How physically demanding was the drawing of the sketch map?","3D-drawing in VR: Time requirenment
+How high do you rate the time required to draw the Sketch Map?","3D-drawing in VR: Performance
+How satisfied are you with your work and your sketch?","3D-drawing in VR: Effort
+Overall, how hard do you had to work to draw the sketch map?","3D-drawing in VR: Frustration
+How frustrated were you when drawing the sketch map?",lang,score,Submitted At,Token
+12344,English,30,Divers / Diverse,,,,,,,,,,,,,,,,,,,,,,,,,,,Show Example,3,Yes,3,1,2,3,3,2,4,3,3,2,First with the 3D-sketching tool in VR and second with pen and paper,3,5,4,4,4,4,4,4,5,6,5,4,eng,0,11.04.2023 10:43:21,28dak3ob3uwrhy2mb28d7oo9cehvzmyk
+100032,Deutsch,30,Weiblich / Female,,2,TRUE,4,4,2,3,1,3,3,3,2,1,Zunächst mit Stift und Papier und dann in VR mit einem 3D Zeichentool.,2,4,3,4,4,4,2,3,3,4,4,4,,,,,,,,,,,,,,,,,,,,,,,,,,,de,0,11.04.2023 10:41:59,uqm5dbnpzlfi7gwwtuqm50mhsyv2znac
+111111,,22,Weiblich,,3,TRUE,3,3,3,3,3,3,3,3,3,3,Zunächst in VR mit einem 3D Zeichentool und dann mit Stift und Papier.,6,4,7,5,7,5,3,3,3,8,3,2,,,,,,,,,,,,,,,,,,,,,,,,,,,,0,05.04.2023 13:50:52,wjhpi4esgo1yh1aw0qfwjhpii26ey2ha
+1085,,30,Weiblich,,3,TRUE,3,2,1,4,3,3,2,1,2,1,Zunächst mit Stift und Papier und dann in VR mit einem 3D Zeichentool.,7,3,3,4,6,5,6,4,4,7,6,3,,,,,,,,,,,,,,,,,,,,,,,,,,,,0,05.04.2023 13:04:53,c2gav3mtiyhg6ce9gwpc2gu4sbli4tk0
+10000,,29,Männlich,,3,TRUE,3,2,2,4,1,3,4,4,3,2,Zunächst in VR mit einem 3D Zeichentool und dann mit Stift und Papier.,,,4,4,4,,2,3,,,,7,,,,,,,,,,,,,,,,,,,,,,,,,,,,0,05.04.2023 11:27:38,ydghpwjz5jox3lj2zu4trydgo3euvjza
+3000,,29,Männlich,,3,TRUE,3,4,3,2,3,3,3,2,2,1,Zunächst mit Stift und Papier und dann in VR mit einem 3D Zeichentool.,,,6,2,,,4,5,,,,4,,,,,,,,,,,,,,,,,,,,,,,,,,,,0,29.03.2023 10:19:33,6wtouenowdleurdeyg1b6wtos0y1ebqr

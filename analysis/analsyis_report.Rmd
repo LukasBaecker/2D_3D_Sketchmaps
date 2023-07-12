@@ -1,0 +1,263 @@
+---
+title: "Comparing 2D and 3D Sketch Maps in Virtual Reality"
+author: "Lukas Bäcker"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r load libraries, message = FALSE, echo=FALSE, eval = FALSE}
+#Run this if you have all the packages, otherwise run the chunk below:
+
+library(tidyverse)
+library(here)
+library(plotly)
+library(sf)
+library(knitr)
+library(data.table)
+library(lme4)
+
+```
+
+```{r Install and load missing packages, include = FALSE}
+#Run this chunk to install and load packages that are missing. 
+
+# Necessary packages for script.
+packages = c("tidyverse", "here",
+             "plotly", "sf", "knitr", "data.table", "lme4")
+
+# Install and then load them.
+package.check <- lapply(
+  packages,
+  FUN = function(x) {
+    if (!require(x, character.only = TRUE)) {
+      install.packages(x, dependencies = TRUE)
+      library(x, character.only = TRUE)
+    }
+  }
+)
+```
+
+```{r load typeform}
+# Info for the csv:
+# ID is the ID of the participant
+# Age is the age of the participant
+# Gender is a number from 1 to 4 where 1 means male, 2 means femal, 3 means diverse and 4 means undefined
+# Q1 to Q10 are the answers for the IPT
+# Order defines the order of drawing tasks. 1 means that the person first drew with pen and paper and 2 means that the person first drew in gravity sketch 
+# PnP_1 to PnP_6 is the NASA-TLX for pen and paper drawing
+# VR_1 to VR_6 is the NASA-TLX for drawing with gravity sketch
+
+questionair <- read.csv(here("data/questionair.csv"))
+participant_count <- nrow(questionair) # count the number of participants
+```
+
+```{r basic statistics}
+
+# age statistics
+age_mean <- mean(questionair$Age)
+age_min <- min(questionair$Age)
+age_max <- max(questionair$Age)
+
+#boxplot(questionair$Age)
+
+# table showing the gender contribution
+gender_table <- table(questionair$Gender)
+
+```
+
+## Indoor Perspective Test
+
+In this section the Indoor Perspective Test (IPT) will be analysed
+
+```{r IPT}
+solution <- c(3,1,4,3,4,3,2,2,2,1)
+ipt_results <- vector(length=participant_count)
+for (index in 1:participant_count) {
+  counter <- 0 # counting right answers
+  for(q in 1:10){
+    if(questionair[index,paste("Q",q, sep = "")]==solution[q]){
+      counter<- counter+1
+    }
+  }
+  ipt_results[index] <- counter #safe results in an vector where the index is the ID of the participant
+}
+
+ipt_mean <- mean(ipt_results)
+#boxplot(itp_results)
+```
+
+## Drawings
+
+```{r drawings}
+drawings_2d_import <- read.csv(here("data/Analysis_2D.csv"))# import the csv that contains the analysis data for the 2D drawings
+drawings_3d_import <- read.csv(here("data/Analysis_3D.csv")) # import the csv that contains the analysis data for the 3D drawings
+# transpose the tables using data.table library
+drawings_2d <- transpose(drawings_2d_import) 
+drawings_3d <- transpose(drawings_3d_import)
+# and also shift the col and row names for both lists
+rownames(drawings_2d) <- colnames(drawings_2d_import)
+colnames(drawings_2d) <- rownames(drawings_2d_import)
+rownames(drawings_3d) <- colnames(drawings_3d_import)
+colnames(drawings_3d) <- rownames(drawings_3d_import)
+# after the transpose the correct colnames are in the first row. 
+# Use the first row as names and delete the row for both lists
+names(drawings_2d)<-drawings_2d[1,]
+drawings_2d<-drawings_2d[-1,]
+names(drawings_3d)<-drawings_3d[1,]
+drawings_3d<-drawings_3d[-1,]
+
+# drawings_2d.dataframe <- as.data.frame(drawings_2d) # converte to dataframe
+# drawings_3d.dataframe <- as.data.frame(drawings_3d) # converte to dataframe
+
+#TODO: work with dataframes rather then vectors
+
+#here create vectors for savig the sum values of the analysis with the length of the number of participants
+allSum2d <- vector(length=participant_count)
+allSum3d <- vector(length=participant_count)
+#create more vectors for saving only the visibility sum and the correctness sum
+all_Visibility2D <- vector(length=participant_count)
+all_Z_Visibility2D <- vector(length=participant_count) #thinking about only analyzing the z visibility
+all_Correct2D <- vector(length=participant_count)
+all_Visibility3D <- vector(length=participant_count)
+all_Z_Visibility3D <- vector(length=participant_count) #thinking about only analyzing the z visibility
+all_Correct3D <- vector(length=participant_count)
+
+for(id in 1:participant_count){
+  sum2d <- 0
+  sum2Dvisible <- 0
+  sum2Dcorrect <-0
+  sum3d <- 0
+  sum3Dvisible <- 0
+  sum3Dcorrect <-0
+  
+  # evaluate the object relations
+  for(i in 4:129){
+    # check how many are correct in 2D
+    sum2d <- sum2d + as.numeric(drawings_2d[id,i])
+    # check how many are correct in 3D
+    sum3d <- sum3d + as.numeric(drawings_3d[id,i])
+    # compare only the visibility
+    if ( substr(colnames(drawings_2d)[i],1, 1) == "V" ){
+      sum2Dvisible <- sum2Dvisible + as.numeric(drawings_2d[id,i])
+      sum3Dvisible <- sum3Dvisible + as.numeric(drawings_3d[id,i])
+    }
+    # compare the visibility of z axis
+    
+    # compare only the correctness
+    if ( substr(colnames(drawings_2d)[i],1, 1) == "C" ){
+      sum2Dcorrect <- sum2Dcorrect + as.numeric(drawings_2d[id,i])
+      sum3Dcorrect <- sum3Dcorrect + as.numeric(drawings_3d[id,i])
+    }
+  }
+  allSum2d[id]<-sum2d
+  allSum3d[id]<-sum3d
+  all_Visibility2D[id]<-sum2Dvisible
+  all_Visibility3D[id]<-sum3Dvisible
+  all_Correct2D[id]<-sum2Dcorrect
+  all_Correct3D[id]<-sum3Dcorrect
+}
+
+```
+
+## Linear Mixed Effects Analysis
+
+Now we are going to analyse the data with the use of the linear mixed effects analysis like described in the tutorial by Bodo Winter (https://bodowinter.com/tutorial/bw_LME_tutorial2.pdf)
+
+```{r Linear Mixed Effects Analysis}
+
+tutorial_data <- read.csv(here("data/tutorial_politeness_data.csv"))
+#
+#ncol is: ID, IPT, type of drawing, counter
+users_data <- matrix(nrow = participant_count*4, ncol = 5, byrow = FALSE)
+colnames(users_data) <- c("ID","IPT","DrawingType","category","score")
+users_data_frame <- as.data.frame(users_data)
+
+for(id in 1:participant_count){
+  users_data_frame[id,1] <- id
+  users_data_frame[id,2] <- ipt_results[id]
+  users_data_frame[id,3] <- "2D"
+  users_data_frame[id,4] <- "visibility"
+  users_data_frame[id,5] <- as.numeric(all_Visibility2D[id])
+  
+  users_data_frame[(id+participant_count),1] <- id
+  users_data_frame[(id+participant_count),2] <- ipt_results[id]
+  users_data_frame[(id+participant_count),3] <- "3D"
+  users_data_frame[(id+participant_count),4] <- "visibility"
+  users_data_frame[(id+participant_count),5] <- all_Visibility3D[id]
+  
+  users_data_frame[(id+participant_count*2),1] <- id
+  users_data_frame[(id+participant_count*2),2] <- ipt_results[id]
+  users_data_frame[(id+participant_count*2),3] <- "2D"
+  users_data_frame[(id+participant_count*2),4] <- "correctness"
+  users_data_frame[(id+participant_count*2),5] <- all_Correct2D[id]
+  
+  users_data_frame[(id+participant_count*3),1] <- id
+  users_data_frame[(id+participant_count*3),2] <- ipt_results[id]
+  users_data_frame[(id+participant_count*3),3] <- "3D"
+  users_data_frame[(id+participant_count*3),4] <- "correctness"
+  users_data_frame[(id+participant_count*3),5] <- all_Correct3D[id]
+}
+
+
+
+visible_and_correct.model = lmer(score ~ IPT + category +
+(1|ID) + (1|DrawingType), data=users_data_frame, REML = FALSE)
+
+visible_and_correct.null = lmer(score ~ IPT + category +
+(1|ID), data=users_data_frame, REML = FALSE)
+
+visible_and_correct.IPTnull = lmer(score ~ category +
+(1|ID) + (1|DrawingType), data=users_data_frame, REML = FALSE)
+
+visible_and_correct.Categorynull = lmer(score ~ IPT +
+(1|ID) + (1|DrawingType), data=users_data_frame, REML = FALSE)
+
+anova(visible_and_correct.null,visible_and_correct.model)
+anova(visible_and_correct.IPTnull,visible_and_correct.model)
+anova(visible_and_correct.Categorynull,visible_and_correct.model)
+
+#check if the category and the drawing type interact with each other
+effecting_Typ_Cat.model = lmer(score ~ IPT + (1|ID)+ category * (1|DrawingType), data=users_data_frame, REML = FALSE)
+effecting_Typ_Cat.null = lmer(score ~ IPT + (1|ID)+ category + (1|DrawingType), data=users_data_frame, REML = FALSE)
+
+anova(effecting_Typ_Cat.null,effecting_Typ_Cat.model)
+
+#check if different baselines when looking at visibility and correctness for individuals make a difference
+individualBaseline.model = lmer(score ~ IPT + category +
+(1+category|ID) + (1+category|DrawingType), data=users_data_frame, REML = FALSE)
+individualBaseline.null = lmer(score ~ IPT + category +
+(1+category|ID), data=users_data_frame, REML = FALSE)
+
+anova(individualBaseline.null,individualBaseline.model)
+```
+
+## NASA-TLX
+
+```{r NASA-TLX}
+#questionair
+
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
