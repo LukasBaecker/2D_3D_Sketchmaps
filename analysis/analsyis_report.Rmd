@@ -19,15 +19,26 @@ library(sf)
 library(knitr)
 library(data.table)
 library(lme4)
+library(lmerTest)
+library(flexplot)
+library(MuMIn)
+library(effects)
+library(ggplot2)
+library(sjPlot)
+library(sjstats)
+library(reshape2)
 
 ```
 
 ```{r Install and load missing packages, include = FALSE}
 #Run this chunk to install and load packages that are missing. 
 
+#installing flexplot from github
+devtools::install_github("dustinfife/flexplot")
+
 # Necessary packages for script.
 packages = c("tidyverse", "here",
-             "plotly", "sf", "knitr", "data.table", "lme4")
+             "plotly", "sf", "knitr", "data.table", "lme4", "lmerTest", "MuMIn", "effects", "ggplot2","sjPlot", "reshape2", "sjstats")
 
 # Install and then load them.
 package.check <- lapply(
@@ -69,13 +80,15 @@ gender_table <- table(questionair$Gender)
 
 ```
 
+
 ## Indoor Perspective Test
 
-In this section the Indoor Perspective Test (IPT) will be analysed
+In this section the Indoor Perspective Test (IPT) will be analysed.
 
 ```{r IPT}
-solution <- c(3,1,4,3,4,3,2,2,2,1)
-ipt_results <- vector(length=participant_count)
+solution <- c(3,1,4,3,4,3,2,2,2,1) # the right solutions for the IPT
+ipt_results <- vector(length=participant_count) # create a vector for saving the IPT results where the index is the ID of the participant
+
 for (index in 1:participant_count) {
   counter <- 0 # counting right answers
   for(q in 1:10){
@@ -87,28 +100,98 @@ for (index in 1:participant_count) {
 }
 
 ipt_mean <- mean(ipt_results)
-#boxplot(itp_results)
+boxplot(ipt_results)
+```
+
+
+## NASA-TLX Analysis
+
+```{r NASA-TLX}
+#TODO: distinguish betwee the mental and the physical demand here
+#Q1: Mental demand from not demanding to highly demanding
+#Q2: Physiscal Demand from not demanding to highly demanding
+#Q3: Time Requ from not time consuming to highly time consuming
+#Q4: Performance Satifcation from not at all satisfied to totally satisfied
+#Q5: How much effort and how hard had you to work from not hard at all to very hard
+#Q6: Frustration from not frustrated at all to highly frustrated
+
+TLX.perQuestion <- matrix(nrow = 6, ncol = 3, byrow = FALSE)
+colnames(TLX.perQuestion) <-  c("Question","Pen and Paper", "VR")
+TLX.perQuestion_dataframe <- as.data.frame(TLX.perQuestion)
+
+TLX.perQuestion_std <- matrix(nrow = 6, ncol = 3, byrow = FALSE)
+colnames(TLX.perQuestion_std) <-  c("Question","Pen and Paper", "VR")
+TLX.perQuestion_std_dataframe <- as.data.frame(TLX.perQuestion_std)
+
+TLX.perQuestion_std_list <- vector(length = 12)
+#TLX.perQuestion_std <- matrix(nrow = 6, ncol = 3, byrow = FALSE)
+#colnames(TLX.perQuestion_std) <-  c("Question","Pen and Paper", "VR")
+#TLX.perQuestion_std_dataframe <- as.data.frame(TLX.perQuestion_std)
+
+TLX_questions <- c("Mental","Physical","Time","Performance","Effort","Frustration")
+drawingtypes <- c("PnP","VR")
+
+for(q in TLX_questions){
+  TLX.perQuestion_dataframe[match(q,TLX_questions),1] <- q
+  TLX.perQuestion_std_dataframe[match(q,TLX_questions),1] <- q
+  for (d in drawingtypes){
+    TLX.perQuestion_dataframe[match(q,TLX_questions),match(d,drawingtypes)+1] <- mean(questionair[,paste(d,match(q,TLX_questions), sep = "_")])
+    TLX.perQuestion_std_dataframe[match(q,TLX_questions),match(d,drawingtypes)+1] <- sd(questionair[,paste(d,match(q,TLX_questions), sep = "_")])
+    TLX.perQuestion_std_list[match(q,TLX_questions)*match(d,drawingtypes)] <- sd(questionair[,paste(d,match(q,TLX_questions), sep = "_")])
+    
+    
+    #Margin_Error <- abs(qnorm((1-ci)/2))* standard_deviation/sqrt(sample_size)
+    #df_out <- data.frame( sample_size=length(x), Mean=mean(x), sd=sd(x),
+    #Margin_Error=Margin_Error,
+    #'CI lower limit'=(mean(x) - Margin_Error),
+    #'CI Upper limit'=(mean(x) + Margin_Error))
+    
+    
+    
+  }
+}
+
+d = melt(TLX.perQuestion_dataframe, id.vars = "Question") #prepare the dataframe for the plot
+
+#TODO:
+# y min und y max für confidence intervals and find param for adding these intervals to the plot 95 percent intervalls
+# https://r-graph-gallery.com/4-barplot-with-error-bar.html
+
+ggplot(data = d,
+       mapping = aes(x = Question, y = value, fill = variable)) + 
+    geom_col(position = position_dodge())+
+  #TODO: use the 95 percent interval and not the standart deviation
+  geom_errorbar( aes(x=Question, ymin=value-TLX.perQuestion_std_list, ymax=value+TLX.perQuestion_std_list), colour="black",position = position_dodge(width = 0.9))
 ```
 
 ## Drawings
 
 ```{r drawings}
-drawings_2d_import <- read.csv(here("data/Analysis_2D.csv"))# import the csv that contains the analysis data for the 2D drawings
-drawings_3d_import <- read.csv(here("data/Analysis_3D.csv")) # import the csv that contains the analysis data for the 3D drawings
+drawings_2d.import <- read.csv(here("data/Analysis_2D.csv"))# import the csv that contains the analysis data for the 2D drawings
+drawings_3d.import <- read.csv(here("data/Analysis_3D.csv")) # import the csv that contains the analysis data for the 3D drawings
+duringThesisNotes.import <- read.csv(here("data/DuringThesisNotes.csv"))
+
+tutorial.import <- read.csv(here("data/tutorial_politeness_data.csv"))
+
 # transpose the tables using data.table library
-drawings_2d <- transpose(drawings_2d_import) 
-drawings_3d <- transpose(drawings_3d_import)
+drawings_2d <- transpose(drawings_2d.import) 
+drawings_3d <- transpose(drawings_3d.import)
+duringThesisNotes <- transpose(duringThesisNotes.import)
 # and also shift the col and row names for both lists
-rownames(drawings_2d) <- colnames(drawings_2d_import)
-colnames(drawings_2d) <- rownames(drawings_2d_import)
-rownames(drawings_3d) <- colnames(drawings_3d_import)
-colnames(drawings_3d) <- rownames(drawings_3d_import)
+rownames(drawings_2d) <- colnames(drawings_2d.import)
+colnames(drawings_2d) <- rownames(drawings_2d.import)
+rownames(drawings_3d) <- colnames(drawings_3d.import)
+colnames(drawings_3d) <- rownames(drawings_3d.import)
+rownames(duringThesisNotes) <- colnames(duringThesisNotes.import)
+colnames(duringThesisNotes) <- rownames(duringThesisNotes.import)
 # after the transpose the correct colnames are in the first row. 
 # Use the first row as names and delete the row for both lists
 names(drawings_2d)<-drawings_2d[1,]
 drawings_2d<-drawings_2d[-1,]
 names(drawings_3d)<-drawings_3d[1,]
 drawings_3d<-drawings_3d[-1,]
+names(duringThesisNotes)<-duringThesisNotes[1,]
+duringThesisNotes<-duringThesisNotes[-1,]
 
 # drawings_2d.dataframe <- as.data.frame(drawings_2d) # converte to dataframe
 # drawings_3d.dataframe <- as.data.frame(drawings_3d) # converte to dataframe
@@ -169,11 +252,9 @@ Now we are going to analyse the data with the use of the linear mixed effects an
 
 ```{r Linear Mixed Effects Analysis}
 
-tutorial_data <- read.csv(here("data/tutorial_politeness_data.csv"))
-#
 #ncol is: ID, IPT, type of drawing, counter
-users_data <- matrix(nrow = participant_count*4, ncol = 5, byrow = FALSE)
-colnames(users_data) <- c("ID","IPT","DrawingType","category","score")
+users_data <- matrix(nrow = participant_count*4, ncol = 6, byrow = FALSE)
+colnames(users_data) <- c("ID","IPT","DrawingType","category","order","score")
 users_data_frame <- as.data.frame(users_data)
 
 for(id in 1:participant_count){
@@ -181,44 +262,130 @@ for(id in 1:participant_count){
   users_data_frame[id,2] <- ipt_results[id]
   users_data_frame[id,3] <- "2D"
   users_data_frame[id,4] <- "visibility"
-  users_data_frame[id,5] <- as.numeric(all_Visibility2D[id])
+  users_data_frame[id,5] <- if(id %% 2 == 0){"3Dfirst"}else{"2Dfirst"}
+  users_data_frame[id,6] <- as.numeric(all_Visibility2D[id])
   
   users_data_frame[(id+participant_count),1] <- id
   users_data_frame[(id+participant_count),2] <- ipt_results[id]
   users_data_frame[(id+participant_count),3] <- "3D"
   users_data_frame[(id+participant_count),4] <- "visibility"
-  users_data_frame[(id+participant_count),5] <- all_Visibility3D[id]
+  users_data_frame[(id+participant_count),5] <- if(id %% 2 == 0){"3Dfirst"}else{"2Dfirst"}
+  users_data_frame[(id+participant_count),6] <- all_Visibility3D[id]
   
   users_data_frame[(id+participant_count*2),1] <- id
   users_data_frame[(id+participant_count*2),2] <- ipt_results[id]
   users_data_frame[(id+participant_count*2),3] <- "2D"
   users_data_frame[(id+participant_count*2),4] <- "correctness"
-  users_data_frame[(id+participant_count*2),5] <- all_Correct2D[id]
+  users_data_frame[(id+participant_count*2),5] <- if(id %% 2 == 0){"3Dfirst"}else{"2Dfirst"}
+  users_data_frame[(id+participant_count*2),6] <- all_Correct2D[id]
   
   users_data_frame[(id+participant_count*3),1] <- id
   users_data_frame[(id+participant_count*3),2] <- ipt_results[id]
   users_data_frame[(id+participant_count*3),3] <- "3D"
   users_data_frame[(id+participant_count*3),4] <- "correctness"
-  users_data_frame[(id+participant_count*3),5] <- all_Correct3D[id]
+  users_data_frame[(id+participant_count*3),5] <- if(id %% 2 == 0){"3Dfirst"}else{"2Dfirst"}
+  users_data_frame[(id+participant_count*3),6] <- all_Correct3D[id]
 }
 
+#TODO: for plots check out: https://www.rensvandeschoot.com/tutorials/lme4/
+
+#first plot showing the relation of ipt and the general score of the drawing
+ggplot(data  = users_data_frame,
+       aes(x = IPT,
+           y = score))+
+  geom_point(size = 1.2,
+             alpha = .8,
+             position = "jitter")+# to add some random noise for plotting purposes
+  theme_minimal()+
+  labs(title = "IPT vs. General Drawingscore")
+
+#second plot showing is showing the relation of ipt and overall drawing score and additionally in colors the drawing type and the regression line
+ggplot(data    = users_data_frame,
+       aes(x   = IPT,
+           y   = score,
+           col = DrawingType,
+           group = DrawingType))+ #to add the colors for different classes
+  geom_point(size     = 1.2,
+             alpha    = .8,
+             position = "jitter")+ #to add some random noise for plotting purposes
+  theme_minimal()+
+   geom_smooth(method = lm,
+              se     = FALSE,
+              size   = .5, 
+              alpha  = .8)+ # to add regression line
+  labs(title    = "Score depending on IPT",
+       subtitle = "and in color the different drawing tools")
+
+#third plot showing is showing the relation of ipt and overall drawing score and additionally in colors the order of drawing tasks and the regression line
+ggplot(data    = users_data_frame,
+       aes(x   = IPT,
+           y   = score,
+           col = order,
+           group = order))+ #to add the colors for different classes
+  geom_point(size     = 1.2,
+             alpha    = .8,
+             position = "jitter")+ #to add some random noise for plotting purposes
+  theme_minimal()+
+   geom_smooth(method = lm,
+              se     = FALSE,
+              size   = .5, 
+              alpha  = .8)+ # to add regression line
+  labs(title    = "Score depending on IPT",
+       subtitle = "and in color the order of drawing tools")
+
+#setting up the linear mixed effects model
+visible_and_correct.model = lmer(score ~ IPT + (1|ID) + order + DrawingType, data=users_data_frame, REML = FALSE)
+
+ggplot(data = users_data_frame, 
+       aes(x   = IPT,
+           y   = score, 
+           col = as.factor(DrawingType)))+
+  geom_point(size     = 1, 
+             alpha    = .7, 
+             position = "jitter")+
+  geom_smooth(method   = lm,
+              se       = T, 
+              size     = 1.5, 
+              linetype = 1, 
+              alpha    = .7)+
+  theme_minimal()+
+  labs(title    = "Linear Relationship Between Overall Drawing Score and IPT for the 2 Drawingtools")+
+  scale_color_manual(name   =" Drawingtool",
+                     labels = c("Pen and Paper", "VR"),
+                     values = c("darkcyan", "orange"))
+
+#residual plot
+plot(fitted(visible_and_correct.model), resid(visible_and_correct.model, type = "pearson"))+
+abline(0,0, col="red")
+#TODO: are Statistical tests of normality and equality of variance across groups needed here?
 
 
-visible_and_correct.model = lmer(score ~ IPT + category +
+#TODO: does this make sense
+#setting up the linear mixed effects model with additionally the category 
+visible_and_correct.modelWithCat = lmer(score ~ IPT + order + category +
 (1|ID) + (1|DrawingType), data=users_data_frame, REML = FALSE)
 
-visible_and_correct.null = lmer(score ~ IPT + category +
+#setting up the null model that does not contain the Drawing Type
+visible_and_correct.null = lmer(score ~ IPT + order +
 (1|ID), data=users_data_frame, REML = FALSE)
 
-visible_and_correct.IPTnull = lmer(score ~ category +
+#setting up the null model where the ipt is omitted
+visible_and_correct.IPTnull = lmer(score ~ category + order +
 (1|ID) + (1|DrawingType), data=users_data_frame, REML = FALSE)
 
-visible_and_correct.Categorynull = lmer(score ~ IPT +
+#setting up the null model where the order of drawing is omitted
+visible_and_correct.Ordernull = lmer(score ~ IPT + category +
 (1|ID) + (1|DrawingType), data=users_data_frame, REML = FALSE)
 
-anova(visible_and_correct.null,visible_and_correct.model)
-anova(visible_and_correct.IPTnull,visible_and_correct.model)
-anova(visible_and_correct.Categorynull,visible_and_correct.model)
+#setting up the null model where the category is omitted
+visible_and_correct.Categorynull = lmer(score ~ IPT + order +
+(1|ID) + (1|DrawingType), data=users_data_frame, REML = FALSE)
+
+#anova for checking the relevance of the different values
+anova(visible_and_correct.null,visible_and_correct.model) # checking the relevance of the drawing type 
+anova(visible_and_correct.IPTnull,visible_and_correct.modelWithCat) # checking the relevance of the IPT
+anova(visible_and_correct.Ordernull,visible_and_correct.modelWithCat) # checking the relevance of the order of the drawing
+anova(visible_and_correct.Categorynull,visible_and_correct.modelWithCat) # checking the relevance of hte category
 
 #check if the category and the drawing type interact with each other
 effecting_Typ_Cat.model = lmer(score ~ IPT + (1|ID)+ category * (1|DrawingType), data=users_data_frame, REML = FALSE)
@@ -235,22 +402,186 @@ individualBaseline.null = lmer(score ~ IPT + category +
 anova(individualBaseline.null,individualBaseline.model)
 ```
 
-## NASA-TLX
+In the next step we divide the results into only the visibility ratings and the correctness ratings to see if there is a difference in the visibility or the correctness between the 2D and 3D drawings.
 
-```{r NASA-TLX}
-#questionair
+```{r Linear Mixed Effects Analysis}
+#ncol is: ID, IPT, type of drawing, counter
+users_data.prep <- matrix(nrow = participant_count*2, ncol = 5, byrow = FALSE)
+colnames(users_data.prep) <- c("ID","IPT","DrawingType","order","score")
+users_data_frame.visible <- as.data.frame(users_data.prep)
+users_data_frame.correct <- as.data.frame(users_data.prep)
 
+#TODO: add the order of drawing to the analysis
+
+for(id in 1:participant_count){
+  users_data_frame.visible[id,1] <- id
+  users_data_frame.visible[id,2] <- ipt_results[id]
+  users_data_frame.visible[id,3] <- "2D"
+  users_data_frame.visible[id,4] <- if(id %% 2 == 0){"3Dfirst"}else{"2Dfirst"}
+  users_data_frame.visible[id,5] <- as.numeric(all_Visibility2D[id])
+  
+  users_data_frame.visible[(id+participant_count),1] <- id
+  users_data_frame.visible[(id+participant_count),2] <- ipt_results[id]
+  users_data_frame.visible[(id+participant_count),3] <- "3D"
+  users_data_frame.visible[(id+participant_count),4] <- if(id %% 2 == 0){"3Dfirst"}else{"2Dfirst"}
+  users_data_frame.visible[(id+participant_count),5] <- all_Visibility3D[id]
+  
+  users_data_frame.correct[id,1] <- id
+  users_data_frame.correct[id,2] <- ipt_results[id]
+  users_data_frame.correct[id,3] <- "2D"
+  users_data_frame.correct[id,4] <- if(id %% 2 == 0){"3Dfirst"}else{"2Dfirst"}
+  users_data_frame.correct[id,5] <- all_Correct2D[id]
+  
+  users_data_frame.correct[(id+participant_count),1] <- id
+  users_data_frame.correct[(id+participant_count),2] <- ipt_results[id]
+  users_data_frame.correct[(id+participant_count),3] <- "3D"
+  users_data_frame.correct[(id+participant_count),4] <- if(id %% 2 == 0){"3Dfirst"}else{"2Dfirst"}
+  users_data_frame.correct[(id+participant_count),5] <- all_Correct3D[id]
+}
+
+ggplot(data    = users_data_frame.visible ,
+       aes(x   = IPT,
+           y   = score,
+           col = DrawingType,
+           group = DrawingType))+ #to add the colours for different classes
+  geom_point(size     = 1.2,
+             alpha    = .8,
+             position = "jitter")+ #to add some random noise for plotting purposes
+  theme_minimal()+
+   geom_smooth(method = lm,
+              se     = FALSE,
+              size   = .5, 
+              alpha  = .8)+ # to add regression line
+  labs(title    = "Visibility-Score depending on IPT",
+       subtitle = "and in color the different drawing tools")
+
+ggplot(data    = users_data_frame.correct ,
+       aes(x   = IPT,
+           y   = score,
+           col = DrawingType,
+           group = DrawingType))+ #to add the colours for different classes
+  geom_point(size     = 1.2,
+             alpha    = .8,
+             position = "jitter")+ #to add some random noise for plotting purposes
+  theme_minimal()+
+   geom_smooth(method = lm,
+              se     = FALSE,
+              size   = .5, 
+              alpha  = .8)+ # to add regression line
+  labs(title    = "Correctness-Score depending on IPT",
+       subtitle = "and in color the different drawing tools")
+
+#setting up the linear mixed effects model for the visible results only
+visible.model = lmer(score ~ IPT + order + (1|ID) + DrawingType, data=users_data_frame.visible, REML = FALSE)
+
+#checking why the model is singular
+#the following code comes from: https://stats.stackexchange.com/questions/509892/why-is-this-linear-mixed-model-singular
+users_data_frame.visible %>% group_by(ID) %>% summarize(mean = mean(score))
+
+n.sim <- 100
+simvec_rint <- numeric(n.sim)  # vector to hold the random intercepts variances
+simvec_fint <- numeric(n.sim)  # vector to hold the fixed intercepts
+
+for (i in 1:n.sim) {
+  set.seed(i)
+  users_data_frame.visible$score1 = users_data_frame.visible$score + rep(rnorm(30, 0, 1), each = 10)
+  m0 <- lmer(score1 ~ IPT + order + (1|ID) + DrawingType, data = users_data_frame.visible)
+
+  if (!isSingular(m0)) {
+    # If the model is not singular then extract the random and fixed effects
+    VarCorr(m0) %>% as.data.frame() %>% pull(vcov) %>% nth(1) -> simvec_rint[i]
+    summary(m0) %>% coef() %>% as.vector() %>% nth(1) -> simvec_fint[i]
+  } else {
+    simvec_rint[i] <- simvec_fint[i] <- NA
+  }
+}
+
+#TODO or check out baysian lme model https://statmodeling.stat.columbia.edu/2023/06/02/blme-bayesian-linear-mixed-effects-models/
+# general check out this: https://bbolker.github.io/mixedmodels-misc/glmmFAQ.html#singular-models-random-effect-variances-estimated-as-zero-or-correlations-estimated-as---1 there are different approaches to deal with singular models
+
+
+#setting up the linear mixed effects model for the visible results only and added randomnes with monte carlo
+visible.modelMonteCarlo = lmer(score1 ~ IPT + order + (1|ID) + DrawingType, data=users_data_frame.visible, REML = FALSE)
+
+
+#setting up the model with interaction of the order and the type of the drawing tool
+visible.modelOrderInteraction = lmer(score ~ IPT + (1|ID) + order * DrawingType, data=users_data_frame.visible, REML = FALSE)
+#setting up the null model where the drawing type is omitted
+visible.null = lmer(score ~ IPT + (1|ID), data=users_data_frame.visible, REML = FALSE)
+
+anova(visible.null,visible.model)
+anova(visible.model, visible.modelOrderInteraction)
+#checking the anova for the model with random extended monte carlo model
+anova(visible.null,visible.modelMonteCarlo)
+
+
+performance::icc(visible.model)
+lme4::isSingular(visible.model)
+performance::check_singularity(visible.model)
+
+correct.model = lmer(score ~ IPT + order + (1|ID) + DrawingType, data=users_data_frame.correct, REML = FALSE)
+correct.null = lmer(score ~ IPT + (1|ID) , data=users_data_frame.correct, REML = FALSE)
+anova(correct.null,correct.model)
 ```
 
-## R Markdown
+```{r Jakub's Code}
+#load the script created by Jakub Krukar
+source(here("options_jk.R"))
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+visible.model.test = lmer(score ~ IPT + (1|ID) + DrawingType, data=users_data_frame.visible, REML = FALSE)
+correct.model.test = lmer(score ~ IPT + (1|ID) + DrawingType, data=users_data_frame.correct, REML = FALSE)
+visible_and_correct.model.test = lmer(score ~ IPT +
+(1|ID) + DrawingType, data=users_data_frame, REML = FALSE)
+visible_and_correct.model.test2 = lmer(score ~ IPT + category +
+(1|ID) + (category|DrawingType), data=users_data_frame, REML = FALSE)
 
-```{r cars}
-summary(cars)
+#checking which model fits better
+#TODO: get deeper into it
+model.comparison(visible_and_correct.model, visible_and_correct.model.test2)
+model.comparison(visible_and_correct.model, visible_and_correct.model.test)
+#TODO: check this visualization
+visualize(visible_and_correct.model,plot="model")
+
+#plotting the drawingtype effect on the score
+plot(effect("DrawingType",visible.model.test))
+plot(effect("DrawingType",correct.model.test))
+plot(effect("DrawingType",visible_and_correct.model.test))
+#plotting the IPT effec ton the score
+plot(effect("IPT",visible.model.test))
+plot(effect("IPT",correct.model.test))
+plot(effect("IPT",visible_and_correct.model.test))
+
+#error in this function
+lmercheck(visible.model)
+lmercheck(correct.model)
+
+#running without error
+lmcheck(visible.model)
+
+vif.mer(visible.model)
+
+kappa.mer(visible.model)
+kappa.mer(correct.model)
+
+#error
+colldiag.mer(visible.model)
+
+#error
+maxcorr.mer(visible.model)
+
+#error
+view_kable(visible.model)
 ```
+
+```{r Plots}
+visible.plottest = lmer(score ~ IPT + (1|ID) + (1|DrawingType), data=users_data_frame.visible)
+estimates(visible.plottest)
+visualize(visible.plottest, plot="all",formula = NULL)
+#TODO: is there a way to compare these two? 
+#TODO: create graphics
+```
+
 
 ## Including Plots
 

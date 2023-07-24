@@ -11,7 +11,7 @@
 
 <meta name="author" content="Lukas Bäcker" />
 
-<meta name="date" content="2023-04-12" />
+<meta name="date" content="2023-07-12" />
 
 <title>Comparing 2D and 3D Sketch Maps in Virtual Reality</title>
 
@@ -299,23 +299,17 @@ overflow-y: auto;
 border: 1px solid #ddd;
 border-radius: 4px;
 }
-.tabset-dropdown > .nav-tabs > li.active:before {
-content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+content: "\e259";
 font-family: 'Glyphicons Halflings';
 display: inline-block;
 padding: 10px;
 border-right: 1px solid #ddd;
 }
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-content: "";
-border: none;
-}
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-content: "";
+content: "\e258";
 font-family: 'Glyphicons Halflings';
-display: inline-block;
-padding: 10px;
-border-right: 1px solid #ddd;
+border: none;
 }
 .tabset-dropdown > .nav-tabs > li.active {
 display: block;
@@ -359,11 +353,261 @@ display: none;
 <h1 class="title toc-ignore">Comparing 2D and 3D Sketch Maps in Virtual
 Reality</h1>
 <h4 class="author">Lukas Bäcker</h4>
-<h4 class="date">2023-04-12</h4>
+<h4 class="date">2023-07-12</h4>
 
 </div>
 
 
+<pre class="r"><code># Info for the csv:
+# ID is the ID of the participant
+# Age is the age of the participant
+# Gender is a number from 1 to 4 where 1 means male, 2 means femal, 3 means diverse and 4 means undefined
+# Q1 to Q10 are the answers for the IPT
+# Order defines the order of drawing tasks. 1 means that the person first drew with pen and paper and 2 means that the person first drew in gravity sketch 
+# PnP_1 to PnP_6 is the NASA-TLX for pen and paper drawing
+# VR_1 to VR_6 is the NASA-TLX for drawing with gravity sketch
+
+questionair &lt;- read.csv(here(&quot;data/questionair.csv&quot;))
+participant_count &lt;- nrow(questionair) # count the number of participants</code></pre>
+<pre class="r"><code># age statistics
+age_mean &lt;- mean(questionair$Age)
+age_min &lt;- min(questionair$Age)
+age_max &lt;- max(questionair$Age)
+
+#boxplot(questionair$Age)
+
+# table showing the gender contribution
+gender_table &lt;- table(questionair$Gender)</code></pre>
+<div id="indoor-perspective-test" class="section level2">
+<h2>Indoor Perspective Test</h2>
+<p>In this section the Indoor Perspective Test (IPT) will be
+analysed</p>
+<pre class="r"><code>solution &lt;- c(3,1,4,3,4,3,2,2,2,1)
+ipt_results &lt;- vector(length=participant_count)
+for (index in 1:participant_count) {
+  counter &lt;- 0 # counting right answers
+  for(q in 1:10){
+    if(questionair[index,paste(&quot;Q&quot;,q, sep = &quot;&quot;)]==solution[q]){
+      counter&lt;- counter+1
+    }
+  }
+  ipt_results[index] &lt;- counter #safe results in an vector where the index is the ID of the participant
+}
+
+ipt_mean &lt;- mean(ipt_results)
+#boxplot(itp_results)</code></pre>
+</div>
+<div id="drawings" class="section level2">
+<h2>Drawings</h2>
+<pre class="r"><code>drawings_2d_import &lt;- read.csv(here(&quot;data/Analysis_2D.csv&quot;))# import the csv that contains the analysis data for the 2D drawings
+drawings_3d_import &lt;- read.csv(here(&quot;data/Analysis_3D.csv&quot;)) # import the csv that contains the analysis data for the 3D drawings
+# transpose the tables using data.table library
+drawings_2d &lt;- transpose(drawings_2d_import) 
+drawings_3d &lt;- transpose(drawings_3d_import)
+# and also shift the col and row names for both lists
+rownames(drawings_2d) &lt;- colnames(drawings_2d_import)
+colnames(drawings_2d) &lt;- rownames(drawings_2d_import)
+rownames(drawings_3d) &lt;- colnames(drawings_3d_import)
+colnames(drawings_3d) &lt;- rownames(drawings_3d_import)
+# after the transpose the correct colnames are in the first row. 
+# Use the first row as names and delete the row for both lists
+names(drawings_2d)&lt;-drawings_2d[1,]
+drawings_2d&lt;-drawings_2d[-1,]
+names(drawings_3d)&lt;-drawings_3d[1,]
+drawings_3d&lt;-drawings_3d[-1,]
+
+# drawings_2d.dataframe &lt;- as.data.frame(drawings_2d) # converte to dataframe
+# drawings_3d.dataframe &lt;- as.data.frame(drawings_3d) # converte to dataframe
+
+#TODO: work with dataframes rather then vectors
+
+#here create vectors for savig the sum values of the analysis with the length of the number of participants
+allSum2d &lt;- vector(length=participant_count)
+allSum3d &lt;- vector(length=participant_count)
+#create more vectors for saving only the visibility sum and the correctness sum
+all_Visibility2D &lt;- vector(length=participant_count)
+all_Z_Visibility2D &lt;- vector(length=participant_count) #thinking about only analyzing the z visibility
+all_Correct2D &lt;- vector(length=participant_count)
+all_Visibility3D &lt;- vector(length=participant_count)
+all_Z_Visibility3D &lt;- vector(length=participant_count) #thinking about only analyzing the z visibility
+all_Correct3D &lt;- vector(length=participant_count)
+
+for(id in 1:participant_count){
+  sum2d &lt;- 0
+  sum2Dvisible &lt;- 0
+  sum2Dcorrect &lt;-0
+  sum3d &lt;- 0
+  sum3Dvisible &lt;- 0
+  sum3Dcorrect &lt;-0
+  
+  # evaluate the object relations
+  for(i in 4:129){
+    # check how many are correct in 2D
+    sum2d &lt;- sum2d + as.numeric(drawings_2d[id,i])
+    # check how many are correct in 3D
+    sum3d &lt;- sum3d + as.numeric(drawings_3d[id,i])
+    # compare only the visibility
+    if ( substr(colnames(drawings_2d)[i],1, 1) == &quot;V&quot; ){
+      sum2Dvisible &lt;- sum2Dvisible + as.numeric(drawings_2d[id,i])
+      sum3Dvisible &lt;- sum3Dvisible + as.numeric(drawings_3d[id,i])
+    }
+    # compare the visibility of z axis
+    
+    # compare only the correctness
+    if ( substr(colnames(drawings_2d)[i],1, 1) == &quot;C&quot; ){
+      sum2Dcorrect &lt;- sum2Dcorrect + as.numeric(drawings_2d[id,i])
+      sum3Dcorrect &lt;- sum3Dcorrect + as.numeric(drawings_3d[id,i])
+    }
+  }
+  allSum2d[id]&lt;-sum2d
+  allSum3d[id]&lt;-sum3d
+  all_Visibility2D[id]&lt;-sum2Dvisible
+  all_Visibility3D[id]&lt;-sum3Dvisible
+  all_Correct2D[id]&lt;-sum2Dcorrect
+  all_Correct3D[id]&lt;-sum3Dcorrect
+}</code></pre>
+</div>
+<div id="linear-mixed-effects-analysis" class="section level2">
+<h2>Linear Mixed Effects Analysis</h2>
+<p>Now we are going to analyse the data with the use of the linear mixed
+effects analysis like described in the tutorial by Bodo Winter (<a href="https://bodowinter.com/tutorial/bw_LME_tutorial2.pdf" class="uri">https://bodowinter.com/tutorial/bw_LME_tutorial2.pdf</a>)</p>
+<pre class="r"><code>tutorial_data &lt;- read.csv(here(&quot;data/tutorial_politeness_data.csv&quot;))
+#
+#ncol is: ID, IPT, type of drawing, counter
+users_data &lt;- matrix(nrow = participant_count*4, ncol = 5, byrow = FALSE)
+colnames(users_data) &lt;- c(&quot;ID&quot;,&quot;IPT&quot;,&quot;DrawingType&quot;,&quot;category&quot;,&quot;score&quot;)
+users_data_frame &lt;- as.data.frame(users_data)
+
+for(id in 1:participant_count){
+  users_data_frame[id,1] &lt;- id
+  users_data_frame[id,2] &lt;- ipt_results[id]
+  users_data_frame[id,3] &lt;- &quot;2D&quot;
+  users_data_frame[id,4] &lt;- &quot;visibility&quot;
+  users_data_frame[id,5] &lt;- as.numeric(all_Visibility2D[id])
+  
+  users_data_frame[(id+participant_count),1] &lt;- id
+  users_data_frame[(id+participant_count),2] &lt;- ipt_results[id]
+  users_data_frame[(id+participant_count),3] &lt;- &quot;3D&quot;
+  users_data_frame[(id+participant_count),4] &lt;- &quot;visibility&quot;
+  users_data_frame[(id+participant_count),5] &lt;- all_Visibility3D[id]
+  
+  users_data_frame[(id+participant_count*2),1] &lt;- id
+  users_data_frame[(id+participant_count*2),2] &lt;- ipt_results[id]
+  users_data_frame[(id+participant_count*2),3] &lt;- &quot;2D&quot;
+  users_data_frame[(id+participant_count*2),4] &lt;- &quot;correctness&quot;
+  users_data_frame[(id+participant_count*2),5] &lt;- all_Correct2D[id]
+  
+  users_data_frame[(id+participant_count*3),1] &lt;- id
+  users_data_frame[(id+participant_count*3),2] &lt;- ipt_results[id]
+  users_data_frame[(id+participant_count*3),3] &lt;- &quot;3D&quot;
+  users_data_frame[(id+participant_count*3),4] &lt;- &quot;correctness&quot;
+  users_data_frame[(id+participant_count*3),5] &lt;- all_Correct3D[id]
+}
+
+
+
+visible_and_correct.model = lmer(score ~ IPT + category +
+(1|ID) + (1|DrawingType), data=users_data_frame, REML = FALSE)
+
+visible_and_correct.null = lmer(score ~ IPT + category +
+(1|ID), data=users_data_frame, REML = FALSE)
+
+visible_and_correct.IPTnull = lmer(score ~ category +
+(1|ID) + (1|DrawingType), data=users_data_frame, REML = FALSE)
+
+visible_and_correct.Categorynull = lmer(score ~ IPT +
+(1|ID) + (1|DrawingType), data=users_data_frame, REML = FALSE)
+
+anova(visible_and_correct.null,visible_and_correct.model)</code></pre>
+<pre><code>## Data: users_data_frame
+## Models:
+## visible_and_correct.null: score ~ IPT + category + (1 | ID)
+## visible_and_correct.model: score ~ IPT + category + (1 | ID) + (1 | DrawingType)
+##                           npar    AIC    BIC  logLik deviance  Chisq Df
+## visible_and_correct.null     5 823.58 837.51 -406.79   813.58          
+## visible_and_correct.model    6 793.84 810.56 -390.92   781.84 31.741  1
+##                           Pr(&gt;Chisq)    
+## visible_and_correct.null                
+## visible_and_correct.model  1.761e-08 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>anova(visible_and_correct.IPTnull,visible_and_correct.model)</code></pre>
+<pre><code>## Data: users_data_frame
+## Models:
+## visible_and_correct.IPTnull: score ~ category + (1 | ID) + (1 | DrawingType)
+## visible_and_correct.model: score ~ IPT + category + (1 | ID) + (1 | DrawingType)
+##                             npar    AIC    BIC  logLik deviance  Chisq Df
+## visible_and_correct.IPTnull    5 792.38 806.32 -391.19   782.38          
+## visible_and_correct.model      6 793.84 810.56 -390.92   781.84 0.5491  1
+##                             Pr(&gt;Chisq)
+## visible_and_correct.IPTnull           
+## visible_and_correct.model       0.4587</code></pre>
+<pre class="r"><code>anova(visible_and_correct.Categorynull,visible_and_correct.model)</code></pre>
+<pre><code>## Data: users_data_frame
+## Models:
+## visible_and_correct.Categorynull: score ~ IPT + (1 | ID) + (1 | DrawingType)
+## visible_and_correct.model: score ~ IPT + category + (1 | ID) + (1 | DrawingType)
+##                                  npar    AIC    BIC  logLik deviance  Chisq Df
+## visible_and_correct.Categorynull    5 811.41 825.35 -400.71   801.41          
+## visible_and_correct.model           6 793.84 810.56 -390.92   781.84 19.578  1
+##                                  Pr(&gt;Chisq)    
+## visible_and_correct.Categorynull               
+## visible_and_correct.model         9.658e-06 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>#check if the category and the drawing type interact with each other
+effecting_Typ_Cat.model = lmer(score ~ IPT + (1|ID)+ category * (1|DrawingType), data=users_data_frame, REML = FALSE)
+effecting_Typ_Cat.null = lmer(score ~ IPT + (1|ID)+ category + (1|DrawingType), data=users_data_frame, REML = FALSE)
+
+anova(effecting_Typ_Cat.null,effecting_Typ_Cat.model)</code></pre>
+<pre><code>## Data: users_data_frame
+## Models:
+## effecting_Typ_Cat.null: score ~ IPT + (1 | ID) + category + (1 | DrawingType)
+## effecting_Typ_Cat.model: score ~ IPT + (1 | ID) + category * (1 | DrawingType)
+##                         npar    AIC    BIC  logLik deviance Chisq Df Pr(&gt;Chisq)
+## effecting_Typ_Cat.null     6 793.84 810.56 -390.92   781.84                    
+## effecting_Typ_Cat.model    6 793.84 810.56 -390.92   781.84     0  0</code></pre>
+<pre class="r"><code>#check if different baselines when looking at visibility and correctness for individuals make a difference
+individualBaseline.model = lmer(score ~ IPT + category +
+(1+category|ID) + (1+category|DrawingType), data=users_data_frame, REML = FALSE)</code></pre>
+<pre><code>## boundary (singular) fit: see help(&#39;isSingular&#39;)</code></pre>
+<pre class="r"><code>individualBaseline.null = lmer(score ~ IPT + category +
+(1+category|ID), data=users_data_frame, REML = FALSE)</code></pre>
+<pre><code>## boundary (singular) fit: see help(&#39;isSingular&#39;)</code></pre>
+<pre class="r"><code>anova(individualBaseline.null,individualBaseline.model)</code></pre>
+<pre><code>## Data: users_data_frame
+## Models:
+## individualBaseline.null: score ~ IPT + category + (1 + category | ID)
+## individualBaseline.model: score ~ IPT + category + (1 + category | ID) + (1 + category | DrawingType)
+##                          npar    AIC    BIC  logLik deviance  Chisq Df
+## individualBaseline.null     7 818.63 838.15 -402.32   804.63          
+## individualBaseline.model   10 784.64 812.51 -382.32   764.64 39.994  3
+##                          Pr(&gt;Chisq)    
+## individualBaseline.null                
+## individualBaseline.model  1.069e-08 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+</div>
+<div id="nasa-tlx" class="section level2">
+<h2>NASA-TLX</h2>
+<pre class="r"><code>#questionair
+raw_tlx_data &lt;- matrix(nrow = participant_count*2, ncol = 4, byrow = FALSE)
+colnames(raw_tlx_data) &lt;- c(&quot;ID&quot;,&quot;IPT&quot;,&quot;DrawingType&quot;,&quot;score&quot;)
+raw_tlx_data_frame &lt;- as.data.frame(raw_tlx_data)
+
+
+for(id in 1:participant_count){
+  raw_tlx_data_frame[id,1] &lt;- id
+  raw_tlx_data_frame[id,2] &lt;- ipt_results[id]
+  raw_tlx_data_frame[id,3] &lt;- &quot;2D&quot;
+  raw_tlx_data_frame[id,4] &lt;- as.numeric(all_Visibility2D[id])
+  
+  raw_tlx_data_frame[id,1] &lt;- id
+  raw_tlx_data_frame[id,2] &lt;- ipt_results[id]
+  raw_tlx_data_frame[id,3] &lt;- &quot;3D&quot;
+  raw_tlx_data_frame[id,4] &lt;- as.numeric(all_Visibility2D[id])
+}</code></pre>
+</div>
 <div id="r-markdown" class="section level2">
 <h2>R Markdown</h2>
 <p>This is an R Markdown document. Markdown is a simple formatting
