@@ -37,7 +37,7 @@ lmercheck <- function(x){
   kasia1 <- kappa.mer(x)
   kasia2 <- r.squaredGLMM(x)
   print(paste0("*Kappa* score was ", round(kasia1, 1), ", Marginal R^2 was ", 
-               round(kasia2[1], 2), " and Conditional R^2 was ", round(kasia2[2], 2),"."))
+               round(kasia2[1], 2), " and Conditional R^2 was ", round(kasia2[2], 2),". Where marginal R^2 represents the proportion of variance explained by the fixed effects alone over the overall variance and the conditional taxe both fixed and random effects."))
   
   line <- readline("Press Enter to see normcheck(x) with residual plots, effect plots, and DFBETAS or Esc to terminate ")
   
