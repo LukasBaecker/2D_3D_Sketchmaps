@@ -62,21 +62,18 @@ package.check <- lapply(
 # PnP_1 to PnP_6 is the NASA-TLX for pen and paper drawing
 # VR_1 to VR_6 is the NASA-TLX for drawing with gravity sketch
 
-questionair <- read.csv(here("data/questionair.csv"))
-participant_count <- nrow(questionair) # count the number of participants
+questionnaire <- read.csv(here("data/questionnaire_corrected.csv")) #as you can see the questionnaire_corrected file is loaded because for the NASA-TLX the performance scale was turned upside down in the corrected file. The question should have been asked the other way around as it was (a 10 is now a 1, a 9 a 2 and so on). 
+participant_count <- nrow(questionnaire) # count the number of participants
 ```
 
 ```{r basic statistics}
 
 # age statistics
-age_mean <- mean(questionair$Age)
-age_min <- min(questionair$Age)
-age_max <- max(questionair$Age)
-
-boxplot(questionair$Age) #visualize the age distribution
+summary(questionnaire$Age)
+boxplot(questionnaire$Age) #visualize the age distribution
 
 # table showing the gender contribution
-gender_table <- table(questionair$Gender)
+gender_table <- table(questionnaire$Gender)
 
 ```
 
@@ -92,7 +89,7 @@ ipt_results <- vector(length=participant_count) # create a vector for saving the
 for (index in 1:participant_count) {
   counter <- 0 # counting right answers
   for(q in 1:10){
-    if(questionair[index,paste("Q",q, sep = "")]==solution[q]){
+    if(questionnaire[index,paste("Q",q, sep = "")]==solution[q]){
       counter<- counter+1
     }
   }
@@ -104,9 +101,43 @@ boxplot(ipt_results)
 ```
 
 
-## NASA-TLX Analysis
+## Raw NASA-TLX Analysis
+First we prepare the data from the questionnaire so that we have clean data to work with.
 
-```{r NASA-TLX}
+```{r TLX prep}
+tlx_data.prep <- matrix(nrow = participant_count*2, ncol = 9, byrow = FALSE)
+colnames(tlx_data.prep) <- c("ID","mental","physical","time","performance","effort","frustration","average", "DrawingType")
+tlx_data <- as.data.frame(tlx_data.prep)
+
+
+for(id in 1:participant_count){
+  #first we sum up all six answers of a single person on a single drawing 
+  tlx_average2D <- (as.numeric(questionnaire[id,paste("PnP",1, sep = "_")])+as.numeric(questionnaire[id,paste("PnP",2, sep = "_")])+as.numeric(questionnaire[id,paste("PnP",3, sep = "_")])+as.numeric(questionnaire[id,paste("PnP",4, sep = "_")])+as.numeric(questionnaire[id,paste("PnP",5, sep = "_")])+as.numeric(questionnaire[id,paste("PnP",6, sep = "_")]))/6*10
+  tlx_average3D <- (as.numeric(questionnaire[id,paste("VR",1, sep = "_")])+as.numeric(questionnaire[id,paste("VR",2, sep = "_")])+as.numeric(questionnaire[id,paste("VR",3, sep = "_")])+as.numeric(questionnaire[id,paste("VR",4, sep = "_")])+as.numeric(questionnaire[id,paste("VR",5, sep = "_")])+as.numeric(questionnaire[id,paste("VR",6, sep = "_")]))/6*10
+
+  tlx_data[id,1] <- as.character(id)
+  tlx_data[id,2] <- as.numeric(questionnaire[id,paste("PnP",1, sep = "_")])*10
+  tlx_data[id,3] <- as.numeric(questionnaire[id,paste("PnP",2, sep = "_")])*10
+  tlx_data[id,4] <- as.numeric(questionnaire[id,paste("PnP",3, sep = "_")])*10
+  tlx_data[id,5] <- as.numeric(questionnaire[id,paste("PnP",4, sep = "_")])*10
+  tlx_data[id,6] <- as.numeric(questionnaire[id,paste("PnP",5, sep = "_")])*10
+  tlx_data[id,7] <- as.numeric(questionnaire[id,paste("PnP",6, sep = "_")])*10
+  tlx_data[id,8] <- tlx_average2D
+  tlx_data[id,9] <- "2D"
+  
+  tlx_data[participant_count+id,1] <- as.character(id)
+  tlx_data[participant_count+id,2] <- as.numeric(questionnaire[id,paste("VR",1, sep = "_")])*10
+  tlx_data[participant_count+id,3] <- as.numeric(questionnaire[id,paste("VR",2, sep = "_")])*10
+  tlx_data[participant_count+id,4] <- as.numeric(questionnaire[id,paste("VR",3, sep = "_")])*10
+  tlx_data[participant_count+id,5] <- as.numeric(questionnaire[id,paste("VR",4, sep = "_")])*10
+  tlx_data[participant_count+id,6] <- as.numeric(questionnaire[id,paste("VR",5, sep = "_")])*10
+  tlx_data[participant_count+id,7] <- as.numeric(questionnaire[id,paste("VR",6, sep = "_")])*10
+  tlx_data[participant_count+id,8] <- tlx_average3D
+  tlx_data[participant_count+id,9] <- "3D"
+}
+```
+
+```{r TLX analysis 1}
 #TODO: analyse the NASA-TLX with an overall value
 #TODO: distinguish between the mental and the physical demand here
 #Q1: Mental demand from not demanding to highly demanding
@@ -115,46 +146,171 @@ boxplot(ipt_results)
 #Q4: Performance Satifcation from not at all satisfied to totally satisfied
 #Q5: How much effort and how hard had you to work from not hard at all to very hard
 #Q6: Frustration from not frustrated at all to highly frustrated
-
-TLX.perQuestion <- matrix(nrow = 6, ncol = 3, byrow = FALSE)
-colnames(TLX.perQuestion) <-  c("Question","Pen and Paper", "VR")
-TLX.perQuestion_dataframe <- as.data.frame(TLX.perQuestion)
-
-TLX.perQuestion_std <- matrix(nrow = 6, ncol = 3, byrow = FALSE)
-colnames(TLX.perQuestion_std) <-  c("Question","Pen and Paper", "VR")
-TLX.perQuestion_std_dataframe <- as.data.frame(TLX.perQuestion_std)
-
-TLX.perQuestion_std_list <- vector(length = 12)
-#TLX.perQuestion_std <- matrix(nrow = 6, ncol = 3, byrow = FALSE)
-#colnames(TLX.perQuestion_std) <-  c("Question","Pen and Paper", "VR")
-#TLX.perQuestion_std_dataframe <- as.data.frame(TLX.perQuestion_std)
-
-TLX_questions <- c("Mental","Physical","Time","Performance","Effort","Frustration")
-drawingtypes <- c("PnP","VR")
-
+tlx_average.perQuestionPrep <- matrix(nrow = 6, ncol = 3, byrow = FALSE)
+colnames(tlx_average.perQuestionPrep) <-  c("Question","Pen and Paper", "VR")
+tlx_average.perQuestion <- as.data.frame(tlx_average.perQuestionPrep)
+#setting up the domains of the nasa-tlx as well as the drawing tool
+TLX_questions <- c("mental","physical","time","performance","effort","frustration")
+drawingtypes <- c("2D","3D")
+#saving the average values for the single domains split by drawing task to the dataframe
 for(q in TLX_questions){
-  TLX.perQuestion_dataframe[match(q,TLX_questions),1] <- q
-  TLX.perQuestion_std_dataframe[match(q,TLX_questions),1] <- q
+  tlx_average.perQuestion[match(q,TLX_questions),1] <- q
   for (d in drawingtypes){
-    TLX.perQuestion_dataframe[match(q,TLX_questions),match(d,drawingtypes)+1] <- mean(questionair[,paste(d,match(q,TLX_questions), sep = "_")])
-    TLX.perQuestion_std_dataframe[match(q,TLX_questions),match(d,drawingtypes)+1] <- sd(questionair[,paste(d,match(q,TLX_questions), sep = "_")])
-    TLX.perQuestion_std_list[match(q,TLX_questions)*match(d,drawingtypes)] <- sd(questionair[,paste(d,match(q,TLX_questions), sep = "_")])
+    print(mean(tlx_data[tlx_data$DrawingType==d,q]))
+    tlx_average.perQuestion[match(q,TLX_questions),match(d,drawingtypes)+1] <- mean(tlx_data[tlx_data$DrawingType==d,q])
   }
 }
 
-d = melt(TLX.perQuestion_dataframe, id.vars = "Question") #prepare the dataframe for the plot
+tlx_average.perQuestionMelted = melt(tlx_average.perQuestion, id.vars = "Question") #prepare the dataframe for the plot
 
 #TODO:
 # y min und y max für confidence intervals and find param for adding these intervals to the plot 95 percent intervalls
 # https://r-graph-gallery.com/4-barplot-with-error-bar.html
 
-ggplot(data = d,
-       mapping = aes(x = Question, y = value, fill = variable)) + 
+
+
+ggplot(data = tlx_average.perQuestionMelted, mapping = aes(x = factor(Question,
+  levels = c("mental","physical","time","performance","effort","frustration"))
+, y = value, fill = variable)) + 
     geom_col(position = position_dodge())+
+    labs(title= "Average Values of RAW-TLX Domains",
+       subtitle = "by the Drawing Tool",x = "domains",y="average ratings")+
+  scale_fill_manual("Drawing Tool", values = c("Pen and Paper" = "darkcyan", "VR" = "orange"))
+
+
   #TODO: use the 95 percent interval and not the standart deviation
-  geom_errorbar( aes(x=Question, ymin=value-TLX.perQuestion_std_list, ymax=value+TLX.perQuestion_std_list), colour="black",position = position_dodge(width = 0.9))
+ggplot(data = d, mapping = aes(x = Question, y = value, fill = variable)) + 
+    geom_col(position = position_dodge())+geom_errorbar( aes(x=Question, ymin=value-TLX.perQuestion_std_list, ymax=value+TLX.perQuestion_std_list), colour="black",position = position_dodge(width = 0.9))+
+  scale_fill_manual("Drawing Tool", values = c("Pen and Paper" = "darkcyan", "VR" = "orange"))
+
+#scale_color_manual(values = c("darkcyan", "orange"))
 ```
 
+```{r TLX analysis 2}
+
+ggplot(tlx_data, aes(x = average, y=DrawingType, colour = DrawingType)) +  # Change filling color
+  geom_boxplot()+ theme_classic()+theme( axis.text.y=element_blank(),
+        axis.ticks.y=element_blank(), axis.line.y = element_blank(), axis.text.x = element_text(size = 12), axis.title.y =element_blank() 
+        ) +labs(x = "average TLX-score")+
+  scale_color_manual(name   =" Drawingtool",
+                     labels = c("Pen and Paper", "VR"),
+                     values = c("darkcyan", "orange"))
+
+summary(tlx_data[tlx_data$DrawingType=="2D", ]$average)
+sd(tlx_data[tlx_data$DrawingType=="2D", ]$average)
+summary(tlx_data[tlx_data$DrawingType=="3D", ]$average)
+sd(tlx_data[tlx_data$DrawingType=="3D", ]$average)
+# base R function for t-test requires a different df format
+tlx_data_wide <- tlx_data %>% 
+    select(ID, DrawingType, average) %>% 
+    spread(DrawingType, average)
+t.test(tlx_data_wide$`3D`, tlx_data_wide$`2D`, paired=TRUE)
+
+#mental domain
+tlx_mental_wide <- tlx_data %>% 
+    select(ID, DrawingType, mental) %>% 
+    spread(DrawingType, mental)
+t.test(tlx_mental_wide$`3D`, tlx_mental_wide$`2D`, paired=TRUE)
+#physical domain
+tlx_physical_wide <- tlx_data %>% 
+    select(ID, DrawingType, physical) %>% 
+    spread(DrawingType, physical)
+t.test(tlx_physical_wide$`3D`, tlx_physical_wide$`2D`, paired=TRUE)
+#time domain
+tlx_time_wide <- tlx_data %>% 
+    select(ID, DrawingType, time) %>% 
+    spread(DrawingType, time)
+t.test(tlx_time_wide$`3D`, tlx_time_wide$`2D`, paired=TRUE)
+#performance domain - higher value means higher dissatisfaction
+tlx_performance_wide <- tlx_data %>% 
+    select(ID, DrawingType, performance) %>% 
+    spread(DrawingType, performance)
+t.test(tlx_performance_wide$`3D`, tlx_performance_wide$`2D`, paired=TRUE)
+#effort domain
+tlx_effort_wide <- tlx_data %>% 
+    select(ID, DrawingType, effort) %>% 
+    spread(DrawingType, effort)# base R function for t-test requires a different df format
+t.test(tlx_effort_wide$`3D`, tlx_effort_wide$`2D`, paired=TRUE)
+#frustration domain
+tlx_frustration_wide <- tlx_data %>% 
+    select(ID, DrawingType, frustration) %>% 
+    spread(DrawingType, frustration)
+t.test(tlx_frustration_wide$`3D`, tlx_frustration_wide$`2D`, paired=TRUE)
+
+
+```
+
+Now that we have an overview of the data we will apply a principal component analysis.
+
+```{r PCA}
+tlx_2D.prep <- matrix(nrow = participant_count, ncol = 6, byrow = FALSE)
+colnames(tlx_2D.prep) <- c("effort","frustration","mental","performance","physical","time", "sum", "average")
+tlx_2D <- as.data.frame(tlx_2D.prep)
+
+tlx_3D.prep <- matrix(nrow = participant_count, ncol = 6, byrow = FALSE)
+colnames(tlx_3D.prep) <- c("effort","frustration","mental","performance","physical","time", "sum", "average")
+tlx_3D <- as.data.frame(tlx_3D.prep)
+
+for(id in 1:participant_count){
+  tlx_2D[id,1] <- as.numeric(questionnaire[id,paste("PnP",1, sep = "_")])
+  tlx_2D[id,2] <- as.numeric(questionnaire[id,paste("PnP",2, sep = "_")])
+  tlx_2D[id,3] <- as.numeric(questionnaire[id,paste("PnP",3, sep = "_")])
+  tlx_2D[id,4] <- as.numeric(questionnaire[id,paste("PnP",4, sep = "_")])
+  tlx_2D[id,5] <- as.numeric(questionnaire[id,paste("PnP",5, sep = "_")])
+  tlx_2D[id,6] <- as.numeric(questionnaire[id,paste("PnP",6, sep = "_")])
+  
+  tlx_3D[id,1] <- as.numeric(questionnaire[id,paste("VR",1, sep = "_")])
+  tlx_3D[id,2] <- as.numeric(questionnaire[id,paste("VR",2, sep = "_")])
+  tlx_3D[id,3] <- as.numeric(questionnaire[id,paste("VR",3, sep = "_")])
+  tlx_3D[id,4] <- as.numeric(questionnaire[id,paste("VR",4, sep = "_")])
+  tlx_3D[id,5] <- as.numeric(questionnaire[id,paste("VR",5, sep = "_")])
+  tlx_3D[id,6] <- as.numeric(questionnaire[id,paste("VR",6, sep = "_")])
+}
+  
+pca_2D <- prcomp(tlx_2D, scale = TRUE)
+#reverse the signs
+pca_2D$rotation <- -1*pca_2D$rotation
+pca_2D$rotation
+
+#reverse the signs of the scores
+pca_2D$x <- -1*pca_2D$x
+#display the first six scores
+head(pca_2D$x)
+#look at the pca result
+biplot(pca_2D, scale = 0)
+#calculate total variance explained by each principal component
+pca_2D_explained <- pca_2D$sdev^2 / sum(pca_2D$sdev^2)
+#create scree plot
+qplot(c(1:6), pca_2D_explained) + 
+  geom_line() + 
+  xlab("Principal Component") + 
+  ylab("Variance Explained") +
+  ggtitle("Scree Plot") +
+  ylim(0, 1)
+
+#Do the same for 3D sktech maps
+pca_3D <- prcomp(tlx_3D, scale = TRUE)
+#reverse the signs
+pca_3D$rotation <- -1*pca_3D$rotation
+pca_3D$rotation
+
+#reverse the signs of the scores
+pca_3D$x <- -1*pca_3D$x
+#display the first six scores
+head(pca_3D$x)
+#look at the pca result
+biplot(pca_3D, scale = 0)
+#calculate total variance explained by each principal component
+pca_3D_explained <- pca_3D$sdev^2 / sum(pca_3D$sdev^2)
+#create scree plot
+qplot(c(1:6), pca_3D_explained) + 
+  geom_line() + 
+  xlab("Principal Component") + 
+  ylab("Variance Explained") +
+  ggtitle("Scree Plot") +
+  ylim(0, 1)
+
+```
 ## Drawings
 
 ```{r drawings}
@@ -241,61 +397,255 @@ Now we are going to analyse the data with the use of the linear mixed effects an
 In a first step we write the sum of visibility relations (visibility.score), the correctness rating (correctness-score) and the results from the f-test, the f-score to a dataframe, adding the ID of the participant, the order of drawing as well as the drawing tool used for the drawing.
 
 ```{r Linear Mixed Effects Analysis}
+#the number of relations that were analysed 
+# there were 7 objects compared among each other and three dimensions resulting in 63 relations
+totalNumberOfRelations <- 63
+
 users_data.prep <- matrix(nrow = participant_count*2, ncol = 7, byrow = FALSE)
 colnames(users_data.prep) <- c("ID","IPT","DrawingType","order","visibility.score","correctness.score","f.score")
 users_data_frame <- as.data.frame(users_data.prep)
+
+#set up a data frame with the visibility, correctness and f-score average for every participant
+users_data.prepAverage <- matrix(nrow = participant_count, ncol = 6, byrow = FALSE)
+colnames(users_data.prepAverage) <- c("ID","IPT","order","visibility.score","correctness.score","f.score")
+users_data_frame.averages <- as.data.frame(users_data.prepAverage)
+
+users_data.prepFscore <- matrix(nrow = participant_count*2, ncol = 5, byrow = FALSE)
+colnames(users_data.prepFscore) <- c("ID","DrawingType","precision","recall","f.score")
+users_data_frame.fscore <- as.data.frame(users_data.prepFscore)
+
 #writing the values to the dataframe
 for(id in 1:participant_count){
+  #f-score for 2D
+  precision.2D <- (all_Correct2D[id]/all_Visibility2D[id])
+  recall.2D <- all_Correct2D[id]/totalNumberOfRelations
+  fscore.2D <- 2*((precision.2D*recall.2D)/(precision.2D+recall.2D))
+  #f-score for 3D
+  precision.3D <- (all_Correct3D[id]/all_Visibility3D[id])
+  recall.3D <- all_Correct3D[id]/totalNumberOfRelations
+  fscore.3D <- 2*((precision.3D*recall.3D)/(precision.3D+recall.3D))
+  
+  #write data to the dataframes
   users_data_frame[id,1] <- as.character(id)
   users_data_frame[id,2] <- ipt_results[id]
   users_data_frame[id,3] <- "2D"
   users_data_frame[id,4] <- if(id %% 2 == 0){"3Dfirst"}else{"2Dfirst"}
-  users_data_frame[id,5] <- as.numeric(all_Visibility2D[id])
-  users_data_frame[id,6] <- as.numeric(all_Correct2D[id]) #TODO: currently absolute count
-  users_data_frame[id,7] <- as.numeric(allSum2d[id]) #TODO: currently not the f-score
+  users_data_frame[id,5] <- all_Visibility2D[id]
+  users_data_frame[id,6] <- precision.2D*100
+  users_data_frame[id,7] <- fscore.2D
   
   users_data_frame[(id+participant_count),1] <- as.character(id)
   users_data_frame[(id+participant_count),2] <- ipt_results[id]
   users_data_frame[(id+participant_count),3] <- "3D"
   users_data_frame[(id+participant_count),4] <- if(id %% 2 == 0){"3Dfirst"}else{"2Dfirst"}
   users_data_frame[(id+participant_count),5] <- all_Visibility3D[id]
-  users_data_frame[(id+participant_count),6] <- all_Correct3D[id] #TODO: currently absolute count
-  users_data_frame[(id+participant_count),7] <- as.numeric(allSum3d[id]) #TODO: currently not the f-score
+  users_data_frame[(id+participant_count),6] <- precision.3D*100
+  users_data_frame[(id+participant_count),7] <- fscore.3D
+  
+  users_data_frame.averages[id,1] <- as.character(id)
+  users_data_frame.averages[id,2] <- ipt_results[id]
+  users_data_frame.averages[id,3] <- if(id %% 2 == 0){"3Dfirst"}else{"2Dfirst"}
+  users_data_frame.averages[id,4] <- mean(c(all_Visibility2D[id],all_Visibility3D[id]))
+  users_data_frame.averages[id,5] <- mean(c((precision.2D*100),(precision.3D*100)))
+  users_data_frame.averages[id,6] <- mean(c(fscore.2D,fscore.3D))
+  
+  users_data_frame.fscore[id,1] <- as.character(id)
+  users_data_frame.fscore[id,2] <- "2D"
+  users_data_frame.fscore[id,3] <- precision.2D
+  users_data_frame.fscore[id,4] <- recall.2D
+  users_data_frame.fscore[id,5] <- fscore.2D
+  
+  users_data_frame.fscore[(id+participant_count),1] <- as.character(id)
+  users_data_frame.fscore[(id+participant_count),2] <- "3D"
+  users_data_frame.fscore[(id+participant_count),3] <- precision.3D
+  users_data_frame.fscore[(id+participant_count),4] <- recall.3D
+  users_data_frame.fscore[(id+participant_count),5] <- fscore.3D
 }
+
+#mutate drawing type, Id and order into factors
+users_data_frame <- users_data_frame %>% 
+    mutate(DrawingType = as.factor(DrawingType),
+           ID = as.factor(ID),
+           order = as.factor(order))
+
+users_data_frame.averages <- users_data_frame.averages %>% 
+    mutate(ID = as.factor(ID),
+           order = as.factor(order))
+
+users_data_frame.fscore <- users_data_frame.fscore %>% 
+    mutate(ID = as.factor(ID))
 ```
+
+### IPT on scores
+
+In this section we have a look at the IPT results and check if they have an influence on the results of the visibility, correctness or our calculated f-score. For this purpose we calculated the mean values of all three scores for every participant to apply a linear model. We can do so because the IPT is for a single person the same over both drawing types.
+
+```{r IPT on visibility}
+ggplot(users_data_frame, aes(IPT, visibility.score)) + 
+  geom_point()+
+  geom_smooth(method = lm,
+              se     = FALSE,
+              size   = .5, 
+              alpha  = .8)+ # to add regression line
+  labs(title    = "Visibility-Score Depending on the IPT")
+
+#setting up the model
+IPTmodel.visibility <- lm(visibility.score ~ IPT, data=users_data_frame.averages)
+summary(IPTmodel.visibility)
+#residual plot
+plot(fitted(IPTmodel.visibility),residuals(IPTmodel.visibility))
+
+
+#checking the correctness-score dependency from the IPT
+ggplot(users_data_frame, aes(IPT, correctness.score)) + 
+  geom_point()+
+  geom_smooth(method = lm,
+              se     = FALSE,
+              size   = .5, 
+              alpha  = .8)+ # to add regression line
+  labs(title    = "Correctness-Score Depending on the IPT")
+
+IPTmodel.correctness <- lm(correctness.score ~ IPT, data=users_data_frame.averages)
+summary(IPTmodel.correctness)
+#residual plot
+plot(fitted(IPTmodel.correctness),residuals(IPTmodel.correctness))
+
+#checking the f-score dependency from the IPT
+ggplot(users_data_frame, aes(IPT, f.score)) + 
+  geom_point()+
+  geom_smooth(method = lm,
+              se     = FALSE,
+              size   = .5, 
+              alpha  = .8)+ # to add regression line
+  labs(title    = "F-Score depending on the IPT")
+
+IPTmodel.fscore <- lm(f.score ~ IPT, data=users_data_frame.averages)
+summary(IPTmodel.fscore)
+#residual plot
+plot(fitted(IPTmodel.fscore),residuals(IPTmodel.fscore))
+```
+
+
+Based on the residual graph we can assume that there is no correlation between IPT and the visibility score. The summary of the linear model confirms that. 
+
+# Order of Drawing Influence on Scores
+
+Now we are doing the same analysis for the order of the drawing due to the fact that every participant got the same order of the drawing for both drawings
+
+```{r order on scores}
+ggplot(users_data_frame, aes(order, visibility.score)) + 
+  geom_point()+
+  geom_smooth(method = lm,
+              se     = FALSE,
+              size   = .5, 
+              alpha  = .8)+ # to add regression line
+  labs(title    = "Visibility-Score Depending on the order of drawings")
+
+#setting up the model
+ordermodel.visibility <- lm(visibility.score ~ order, data=users_data_frame.averages)
+summary(ordermodel.visibility)
+#residual plot
+plot(fitted(ordermodel.visibility),residuals(ordermodel.visibility))
+
+
+#checking the correctness-score dependency from the IPT
+ggplot(users_data_frame, aes(order, correctness.score)) + 
+  geom_point()+
+  geom_smooth(method = lm,
+              se     = FALSE,
+              size   = .5, 
+              alpha  = .8)+ # to add regression line
+  labs(title    = "Correctness-Score Depending on the order of drawings")
+
+ordermodel.correctness <- lm(correctness.score ~ order, data=users_data_frame.averages)
+summary(ordermodel.correctness)
+#residual plot
+plot(fitted(ordermodel.correctness),residuals(ordermodel.correctness))
+
+#checking the f-score dependency from the IPT
+ggplot(users_data_frame, aes(order, f.score)) + 
+  geom_point()+
+  geom_smooth(method = lm,
+              se     = FALSE,
+              size   = .5, 
+              alpha  = .8)+ # to add regression line
+  labs(title    = "F-Score depending on the order of drawings")
+
+ordermodel.fscore <- lm(f.score ~ order, data=users_data_frame.averages)
+summary(ordermodel.fscore)
+#residual plot
+plot(fitted(ordermodel.fscore),residuals(ordermodel.fscore))
+```
+
 
 ### Visibility of Spatial Relations
 
 Now we have a look at the visibility score as well as setting up the linear mixed effects model to analyse the influence of the drawing tool on the visibility of spatial relations.   
 
+First, let's have a look at the data  and its contributions.
+
 ```{r Visibility of Spatial Relations}
-#TODO: sharpen the titles and subtitles, labels and styling
-ggplot(data    = users_data_frame ,
-       aes(x   = IPT,
-           y   = visibility.score,
-           col = DrawingType,
-           group = DrawingType))+ #to add the colors for different classes
-  geom_point(linewidth= 1.2,
-             alpha    = .8,
-             position = "jitter")+ #to add some random noise for plotting purposes
-  theme_minimal()+
-   geom_smooth(method = lm,
+ggplot(users_data_frame, aes(DrawingType, visibility.score)) + 
+  geom_point()+
+  geom_smooth(method = lm,
               se     = FALSE,
               size   = .5, 
               alpha  = .8)+ # to add regression line
-  labs(title    = "Visibility-Score depending on IPT",
-       subtitle = "and in color the different drawing tools")
+  labs(title    = "Visibility-Score depending on the drawing type",
+       subtitle = "all 3D scores are layerd")
+
+#set up data frames containing only 2D or 3D data
+users_data_frame.2D <-users_data_frame[users_data_frame$DrawingType=="2D",]
+users_data_frame.3D <-users_data_frame[users_data_frame$DrawingType=="3D",]
+
+#summary of 2d sketch maps' visibility-score
+summary(users_data_frame.2D$visibility.score)
+boxplot(users_data_frame.2D$visibility.score)
+#every drawing in 3D has the maximum of 63 points
+summary(users_data_frame.3D$visibility.score)
+```
+
+Now we have a look at the linear mixed effects model of the visibility-score. For this purpose we first set up the LME, then the null-LME where we  omit the drawing type, which we would like to check if it has a relevant influence on the visibility score.
+
+```{r LME of visibility-score}
+#disable scientific notation to easier compare very low numbers
+options(scipen = 999)
 
 #setting up the linear mixed effects model for the visible results only
 visibility.model = lmer(visibility.score ~ IPT + order + (1|ID) + DrawingType, data=users_data_frame, REML = FALSE)
+summary(visibility.model)
 
-#TODO: check the interpretation of these
-performance::icc(visibility.model)
-lme4::isSingular(visibility.model)
-performance::check_singularity(visibility.model)
+#show that the model is singular
+performance::icc(visibility.model)#true
+lme4::isSingular(visibility.model)#true
+performance::check_singularity(visibility.model)#true
+```
+
+Due to the fact, that the model is singular we have to check if this singularity is an issue. An alternative test has to be used to compare the test's results. In the next section a paired (repeated measures) t-test is applied. If we get an approximately same result we can say that the singularity is no issue here.
+
+The t-value for factor DrawingType3D is 5.402
+p-value for this factor is < 0.0001
+The test estimates that the difference in the visibility score between 3d and 2d condition is 6.8 (it's in the Estimate column).
+
+Now let's compare this with the results of a simple t-test:
+```{r}
+# base R function for t-test requires a different df format
+users_data_wide <- users_data_frame %>% 
+    select(ID, IPT, order, DrawingType, visibility.score) %>% 
+    spread(DrawingType, visibility.score)
+
+t.test(users_data_wide$`3D`, users_data_wide$`2D`, paired=TRUE)
+
+```
+
+t value is 5.2988, p-value is < 0.0001. The test estimates that the difference in the visibility score between 3d and 2d condition is 6.8. Now that we see that the results of these two models are close to each other we know that we are good despite the singularity. With this information, we can now check for the significance of the influence of the drawing type on the visibility-score. For that purpose, we first set up a null-model, omitting the drawing type to then do an anova.
+
+```{r significance influence of drawing type on visibility-score}
 
 #setting up the null model where the drawing type is omitted
 visibility.null = lmer(visibility.score ~ IPT + order + (1|ID), data=users_data_frame, REML = FALSE)
+
+#anova for significance
 anova(visibility.null,visibility.model)
 
 #residual plot
@@ -303,46 +653,16 @@ plot(fitted(visibility.model), resid(visibility.model, type = "pearson"))+
 abline(0,0, col="red")
 ```
 
-In the next section we are trying to get the model for the visibility score without having it singular
+We could also simplify the LME model and show that the dependence of the visibility score of the drawing type is as significant as with having the IPT and the order in the LME model.
 
-```{r, Singular Workaround}
-#checking why the model is singular
-#the following code comes from: https://stats.stackexchange.com/questions/509892/why-is-this-linear-mixed-model-singular
-users_data_frame %>% group_by(ID) %>% summarize(mean = mean(visibility.score))
-
-n.sim <- 100
-simvec_rint <- numeric(n.sim)  # vector to hold the random intercepts variances
-simvec_fint <- numeric(n.sim)  # vector to hold the fixed intercepts
-
-for (i in 1:n.sim) {
-  set.seed(i)
-  users_data_frame$visibility.score.1 = users_data_frame$visibility.score + rep(rnorm(6, 0, 1), each = 10)
-  m0 <- lmer(visibility.score.1 ~ IPT + order + (1|ID) + DrawingType, data = users_data_frame)
-
-  if (!isSingular(m0)) {
-    # If the model is not singular then extract the random and fixed effects
-    VarCorr(m0) %>% as.data.frame() %>% pull(vcov) %>% nth(1) -> simvec_rint[i]
-    summary(m0) %>% coef() %>% as.vector() %>% nth(1) -> simvec_fint[i]
-  } else {
-    simvec_rint[i] <- simvec_fint[i] <- NA
-  }
-}
-
-#TODO or check out baysian lme model https://statmodeling.stat.columbia.edu/2023/06/02/blme-bayesian-linear-mixed-effects-models/
-# general check out this: https://bbolker.github.io/mixedmodels-misc/glmmFAQ.html#singular-models-random-effect-variances-estimated-as-zero-or-correlations-estimated-as---1 there are different approaches to deal with singular models
-
-
-#setting up the linear mixed effects model for the visible results only and added randomnes with monte carlo
-visibility.modelMonteCarlo = lmer(visibility.score.1 ~ IPT + order + (1|ID) + DrawingType, data=users_data_frame, REML = FALSE)
-#setting up the null model
-visibility.nullMonteCarlo = lmer(visibility.score.1 ~ IPT + order + (1|ID), data=users_data_frame, REML = FALSE)
-#checking the anova for the model with random extended monte carlo model
-anova(visibility.nullMonteCarlo,visibility.modelMonteCarlo)
-
-#residual plot
-plot(fitted(visibility.modelMonteCarlo), resid(visibility.modelMonteCarlo, type = "pearson"))+
-abline(0,0, col="red")
+```{r simplified visibility LME}
+visibility.modelSimple = lmer(visibility.score ~ (1|ID) + DrawingType, data=users_data_frame, REML = FALSE)
+#this is not singular but the null model is
+visibility.nullSimple =  lmer(visibility.score ~ (1|ID), data=users_data_frame, REML = FALSE)
+anova(visibility.nullSimple,visibility.modelSimple)
 ```
+
+We can see that the anove shows a great significance of the influence of the drawing type on the visibility-score
 
 ### Correctness of Spatial Relations
 
@@ -351,28 +671,51 @@ Now we have a look at the correctness of the spatial relations displayed in the 
 ```{r Correctness of Spatial Relations}
 #TODO: use a relative value or something else for the correctness
 
-#have a look at the data with the following plot
-ggplot(data    = users_data_frame ,
-       aes(x   = IPT,
-           y   = correctness.score,
-           col = DrawingType,
-           group = DrawingType))+ #to add the colors for different classes
-  geom_point(size     = 1.2,
-             alpha    = .8,
-             position = "jitter")+ #to add some random noise for plotting purposes
-  theme_minimal()+
-   geom_smooth(method = lm,
+#have a look at the data with the following plots
+ggplot(users_data_frame, aes(DrawingType, correctness.score, colour = order)) + 
+  geom_point()+
+  geom_smooth(method = lm,
               se     = FALSE,
               size   = .5, 
               alpha  = .8)+ # to add regression line
-  labs(title    = "Correctness-Score depending on IPT",
-       subtitle = "and in color the different drawing tools")
+  labs(title    = "Correctness-Score depending on drawing type",
+       subtitle = "and in color the different order of drawings")
+
+
+ggplot(data = users_data_frame, 
+       aes(x   = IPT,
+           y   = correctness.score, 
+           col = as.factor(DrawingType)))+
+  geom_point(size     = 1.5, 
+             alpha    = .7, 
+             position = "jitter")+
+  geom_smooth(method   = lm,
+              se       = T, 
+              size     = 1.5, 
+              linetype = 1, 
+              alpha    = .3)+
+  theme_minimal()+
+  labs(title    = "Correlation of Relative Correctness-Score and IPT-result")+
+  scale_color_manual(name   =" Drawingtool",
+                     labels = c("Pen and Paper", "VR"),
+                     values = c("darkcyan", "orange"))
+
 
 #setting up the linear mixed effects model for the correctness score analysis 
 correctness.model = lmer(correctness.score ~ IPT + order + (1|ID) + DrawingType, data=users_data_frame, REML = FALSE)
 #setting up the null model and check the significants of the model with the anova
-correctness.null = lmer(correctness.score ~ IPT + (1|ID) , data=users_data_frame, REML = FALSE)
+correctness.null = lmer(correctness.score ~ IPT + order + (1|ID) , data=users_data_frame, REML = FALSE)
+correctness.nullWithoutIPT = lmer(correctness.score ~ order + (1|ID) + DrawingType , data=users_data_frame, REML = FALSE)
+correctness.nullWithoutOrder = lmer(correctness.score ~ IPT + (1|ID) + DrawingType , data=users_data_frame, REML = FALSE)
+
+correctness.modelOrderOnly = lmer(correctness.score ~ order + (1|ID), data=users_data_frame, REML = FALSE)
+correctness.nullOrderOnly = lmer(correctness.score ~  (1|ID), data=users_data_frame, REML = FALSE)
+
+anova(correctness.nullOrderOnly, correctness.modelOrderOnly)
+
 anova(correctness.null,correctness.model) #checking the significants
+anova(correctness.nullWithoutIPT,correctness.model) #checking the significants
+anova(correctness.nullWithoutOrder,correctness.model) #checking the significants
 
 #residual plot
 plot(fitted(correctness.model), resid(correctness.model, type = "pearson"))+
@@ -382,66 +725,51 @@ abline(0,0, col="red")
 
 Now that we analysed the visibility and the correctness of the relationships, the f-score will be used to analyse both.
 
-```{r Linear Mixed Effects Analysis}
+```{r f-score}
+#get an overview
+summary(users_data_frame$f.score)
+summary(users_data_frame.2D$f.score)
+summary(users_data_frame.3D$f.score)
+#variance of f-scores of 2D and 3D drawings seperated
+var(users_data_frame.2D$f.score)
+var(users_data_frame.3D$f.score)
 
-#TODO: implement the F-Score here and set up the model
+ggplot(users_data_frame, aes(x = f.score, y=DrawingType, colour = DrawingType)) +  # Change filling color
+  geom_boxplot()+ theme_classic()+theme( axis.text.y=element_blank(),
+        axis.ticks.y=element_blank(), axis.line.y = element_blank(), axis.text.x = element_text(size = 12), axis.title.y =element_blank() 
+        ) +labs(x = "F-Score")+
+  scale_color_manual(name   =" Drawingtool",
+                     labels = c("Pen and Paper", "VR"),
+                     values = c("darkcyan", "orange"))
 
-#first plot showing the relation of ipt and the general score of the drawing
-ggplot(data  = users_data_frame,
-       aes(x = IPT,
-           y = f.score))+
-  geom_point(size = 1.2,
-             alpha = .8,
-             position = "jitter")+# to add some random noise for plotting purposes
-  theme_minimal()+
-  labs(title = "IPT vs. General Drawingscore")
-
-#second plot showing is showing the relation of ipt and overall drawing score and additionally in colors the drawing type and the regression line
-ggplot(data    = users_data_frame,
-       aes(x   = IPT,
-           y   = f.score,
-           col = DrawingType,
-           group = DrawingType))+ #to add the colors for different classes
-  geom_point(size     = 1.2,
-             alpha    = .8,
-             position = "jitter")+ #to add some random noise for plotting purposes
-  theme_minimal()+
-   geom_smooth(method = lm,
+#have a look at precision and recall
+ggplot(users_data_frame.fscore, aes(precision, recall, colour = DrawingType)) + 
+  geom_point()+
+  geom_smooth(method = lm,
               se     = FALSE,
               size   = .5, 
               alpha  = .8)+ # to add regression line
-  labs(title    = "Score depending on IPT",
-       subtitle = "and in color the different drawing tools")
+  labs(title    = "Precision and Recall",
+       subtitle = "colored are the different drawing tools")
 
-#third plot showing is showing the relation of ipt and overall drawing score and additionally in colors the order of drawing tasks and the regression line
-ggplot(data    = users_data_frame,
-       aes(x   = IPT,
-           y   = f.score,
-           col = order,
-           group = order))+ #to add the colors for different classes
-  geom_point(size     = 1.2,
-             alpha    = .8,
-             position = "jitter")+ #to add some random noise for plotting purposes
-  theme_minimal()+
-   geom_smooth(method = lm,
+ggplot(users_data_frame, aes(IPT, f.score, colour = DrawingType)) + 
+  geom_point()+
+  geom_smooth(method = lm,
               se     = FALSE,
               size   = .5, 
               alpha  = .8)+ # to add regression line
-  labs(title    = "Score depending on IPT",
-       subtitle = "and in color the order of drawing tools")
+  labs(title    = "Precision and Recall",
+       subtitle = "colored are the different drawing tools")
 
 #setting up the linear mixed effects model
-fscore.model = lmer(f.score ~ IPT + order + 
-DrawingType + (1|ID), data=users_data_frame, REML = FALSE)
+fscore.model = lmer(f.score ~ IPT + order + DrawingType + (1|ID), data=users_data_frame, REML = FALSE)
+summary(fscore.model)
 #setting up the null model that does not contain the Drawing Type
-fscore.null = lmer(f.score ~ IPT + order +
-(1|ID), data=users_data_frame, REML = FALSE)
+fscore.null = lmer(f.score ~ IPT + order + (1|ID), data=users_data_frame, REML = FALSE)
 #setting up the null model where the ipt is omitted
-fscore.nullIPT = lmer(f.score ~ order + DrawingType +
-(1|ID), data=users_data_frame, REML = FALSE)
+fscore.nullIPT = lmer(f.score ~ order + DrawingType + (1|ID), data=users_data_frame, REML = FALSE)
 #setting up the null model where the order of drawing is omitted
-fscore.nullOrder = lmer(f.score ~ IPT + 
-DrawingType + (1|ID), data=users_data_frame, REML = FALSE)
+fscore.nullOrder = lmer(f.score ~ IPT + DrawingType + (1|ID), data=users_data_frame, REML = FALSE)
 
 #anova for checking the relevance of the different values
 anova(fscore.null,fscore.model) # checking the relevance of the drawing type 
@@ -452,16 +780,16 @@ ggplot(data = users_data_frame,
        aes(x   = IPT,
            y   = f.score, 
            col = as.factor(DrawingType)))+
-  geom_point(size     = 1, 
+  geom_point(size     = 1.5, 
              alpha    = .7, 
              position = "jitter")+
   geom_smooth(method   = lm,
               se       = T, 
               size     = 1.5, 
               linetype = 1, 
-              alpha    = .7)+
+              alpha    = .3)+
   theme_minimal()+
-  labs(title    = "Linear Relationship Between Overall Drawing Score and IPT for the 2 Drawingtools")+
+  labs(title    = "Correlation of F-Score and IPT-result for the 2 Drawingtools")+
   scale_color_manual(name   =" Drawingtool",
                      labels = c("Pen and Paper", "VR"),
                      values = c("darkcyan", "orange"))
@@ -469,69 +797,13 @@ ggplot(data = users_data_frame,
 #residual plot
 plot(fitted(fscore.model), resid(fscore.model, type = "pearson"))+
 abline(0,0, col="red")
-
-#TODO: are Statistical tests of normality and equality of variance across groups needed here?
-#QQ-plot to check for normality of residuals
-#qqnorm(resid(visible_and_correct.model))+
-#qqline(resid(visible_and_correct.model), col = "red") # add a perfect fit line
 ```
 
-```{r Jakub's Code}
-
-#TODO: for additional plots check out: https://www.rensvandeschoot.com/tutorials/lme4/
-
-#load the script created by Jakub Krukar
-source(here("options_jk.R"))
-
-#checking which model fits better
-#TODO: get deeper into it
-model.comparison(visible_and_correct.model, visible_and_correct.null)
-model.comparison(visible.model, visible.null)
-model.comparison(correct.model,correct.null)
-
-# with flexplot you can plot the distribution of different values. check for example how the IPT results are distributed.
-  # flexplot(IPT~1,data=users_data_frame)
-  # flexplot(score~1, data=users_data_frame.correct)
-
-#TODO: check this visualization
-visualize(visible.model, plot="all")
-
-#plotting the drawingtype effect on the score
-#TODO: replot this without the connection line between the 2D and 3D value
-plot(effect("DrawingType",visible.model), main="Effect of Drawing Type on Visibility of Spatial Relations", xlab = "Drawing Type", ylab = "Visibility Score", colors = c("darkorange", "darkcyan"))
-plot(effect("DrawingType",correct.model))
-plot(effect("DrawingType",visible_and_correct.model))
-#plotting the IPT effec ton the score
-plot(effect("IPT",visible.model))
-plot(effect("IPT",correct.model))
-plot(effect("IPT",visible_and_correct.model))
-
-#error in this function
-lmercheck(visible.model)
-lmercheck(correct.model)
-
-#running without error
-lmcheck(visible.model)
-
-vif.mer(visible.model)
-
-kappa.mer(visible.model)
-kappa.mer(correct.model)
-
-#error
-colldiag.mer(visible.model)
-
-#error
-maxcorr.mer(visible.model)
-
-#error
-view_kable(visible.model)
-```
 
 ```{r Plots}
-visible.plottest = lmer(score ~ IPT + (1|ID) + (1|DrawingType), data=users_data_frame.visible)
-estimates(visible.plottest)
-visualize(visible.plottest, plot="all",formula = NULL)
+#visible.plottest = lmer(score ~ IPT + (1|ID) + (1|DrawingType), data=users_data_frame.visible)
+#estimates(visible.plottest)
+#visualize(visible.plottest, plot="all",formula = NULL)
 #TODO: is there a way to compare these two? 
 #TODO: create graphics
 ```
