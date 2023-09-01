@@ -8,6 +8,7 @@ The aim of this thesis is to compare 2D and 3D Sketch Maps
 ## Software and Versions
   * Blender 3.4.1
   * Unity 2021.3.10f1
+    * with XR Interaction Toolkit 2.0.4 
   * Meta Quest with System ...
   * R Studio 2023.03.1+446
   * R 4.3.0
