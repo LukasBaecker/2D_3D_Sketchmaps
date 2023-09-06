@@ -244,7 +244,7 @@ Now that we have an overview of the data we will apply a principal component ana
 
 ```{r PCA}
 tlx_2D.prep <- matrix(nrow = participant_count, ncol = 6, byrow = FALSE)
-colnames(tlx_2D.prep) <- c("effort","frustration","mental","performance","physical","time", "sum", "average")
+colnames(tlx_2D.prep) <- c("effort","frustration","mental","performance","physical","time")
 tlx_2D <- as.data.frame(tlx_2D.prep)
 
 tlx_3D.prep <- matrix(nrow = participant_count, ncol = 6, byrow = FALSE)
