@@ -55,7 +55,7 @@ The [analysis subfolder](./analysis) contains all tools that I needed to analyse
 ### How to setup the analysis
 To re-construct the analysis, download the described R and R-Studio versions to avoid errors and open the analysis folder in a new project. Now start the R-markdown file and run the code. There might be errors installing packages. Make sure that all the used packages are running and you should not have any errors. Enjoy.
 
-### 3D Assets Attribution
+## 3D Assets Attribution
 Low Poly Shark by IsabelleDotJpeg ([at sketchfab](https://sketchfab.com/3d-models/low-poly-blahaj-5ac23e0cd44d49dcaaa14967f7d7a778))
 Low Poly Car by Creative Mango ([at sketchfab](https://sketchfab.com/3d-models/low-poly-car-93971323324243468f24d7da9d18f617))
 Stuffed rhino toy low poly by assetfactory ([at sketchfab](https://sketchfab.com/3d-models/stuffed-rhino-toy-low-poly-f5251aad48af4eae8bcccad6217fc5a6))
